@@ -1,17 +1,17 @@
 <template>
     <div class="login-modal" v-if="show">
-    <div class="modal-content">
-        <h2>Login</h2>
-        <form @submit.prevent="submitLogin">
-            <input type="text" id="username" placeholder="Nome de utilizador" v-model="username">
-            <input type="password" id="password" placeholder="Palavra-Passe" v-model="password">
-            <p v-if="loginError" class="error-message">{{ loginError }}</p>
-            <div class="form-actions">
-                <button type="button" @click="close">Cancelar</button>
-                <button type="submit">Confirmar</button>
-            </div>
-        </form>
-    </div>
+        <div class="modal-content">
+            <h2>Login</h2>
+            <form @submit.prevent="submitLogin">
+                <input type="text" id="username" placeholder="Nome de utilizador" v-model="username">
+                <input type="password" id="password" placeholder="Palavra-Passe" v-model="password">
+                <p v-if="loginError" class="error-message">{{ loginError }}</p>
+                <div class="form-actions">
+                    <button type="button" @click="close">Cancelar</button>
+                    <button type="submit">Confirmar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -19,11 +19,11 @@
 export default {
     props: ['show'],
     data() {
-    return {
-        username: '',
-        password: '',
-        loginError: ''
-    }
+        return {
+            username: '',
+            password: '',
+            loginError: ''
+        }
     },
     methods: {
         submitLogin() {

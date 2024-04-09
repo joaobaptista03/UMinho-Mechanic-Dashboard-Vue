@@ -1,11 +1,11 @@
 <template>
     <div>
-    <login-button @login-clicked="showLoginModal = true"></login-button>
-    <login-modal
-        :show="showLoginModal"
-        @close="showLoginModal = false"
-        @login-success="handleLoginSuccess"
-    ></login-modal>
+        <login-button @login-clicked="showLoginModal = true"></login-button>
+        <login-modal
+            :show="showLoginModal"
+            @close="showLoginModal = false"
+            @login-success="handleLoginSuccess"
+        ></login-modal>
     </div>
 </template>
 
