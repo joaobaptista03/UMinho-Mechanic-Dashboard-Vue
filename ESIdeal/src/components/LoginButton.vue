@@ -1,19 +1,19 @@
 <template>
-    <button @click="openLoginModal">Login</button>
+    <button class="loginButton" @click="openLoginModal">Login</button>
 </template>
 
 <script>
 export default {
     methods: {
-    openLoginModal() {
-        this.$emit("login-clicked");
-    },
+        openLoginModal() {
+            this.$emit("login-clicked");
+        },
     },
 };
 </script>
 
 <style>
-button {
+.loginButton {
     background-color: orange;
     border-radius: 20px;
     border: none;

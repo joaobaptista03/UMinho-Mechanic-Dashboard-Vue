@@ -73,7 +73,7 @@ form input {
     border-radius: 5px;
     width: 500px;
 }
-.modal-content h2, label {
+.modal-content h2, .error-message {
     color: black;
 }
 .error-message {

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <login-button @login-clicked="showLoginModal = true"></login-button>
-        <login-modal
+        <LoginButton @login-clicked="showLoginModal = true"></LoginButton>
+        <LoginModal
             :show="showLoginModal"
             @close="showLoginModal = false"
             @login-success="handleLoginSuccess"
-        ></login-modal>
+        ></LoginModal>
     </div>
 </template>
 
@@ -15,8 +15,8 @@ import LoginModal from './LoginModal.vue';
 
 export default {
     components: {
-    LoginButton,
-    LoginModal
+        LoginButton,
+        LoginModal
     },
     data() {
         return {

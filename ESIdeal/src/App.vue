@@ -1,23 +1,28 @@
 <template>
     <div id="app">
-        <logged-out-page v-if="!isAuthenticated" @login-success="isAuthenticated = true"></logged-out-page>
-        <logged-in-page v-if="isAuthenticated"></logged-in-page>
+        <Home v-if="!isAuthenticated" @login-success="isAuthenticated = true"></Home>
+        <LoggedHome v-if="isAuthenticated" @logout="logout"></LoggedHome>
     </div>
 </template>
 
 <script>
-import LoggedOutPage from './components/Home.vue';
-import LoggedInPage from './components/LoggedHome.vue';
+import Home from './components/Home.vue';
+import LoggedHome from './components/LoggedHome.vue';
 
 export default {
     components: {
-    LoggedOutPage,
-    LoggedInPage
+        Home,
+        LoggedHome
     },
     data() {
         return {
             isAuthenticated: false
         };
+    },
+    methods: {
+        logout() {
+            this.isAuthenticated = false;
+        }
     }
 };
 </script>
