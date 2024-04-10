@@ -34,5 +34,6 @@ export default {
 
 .loginButton:hover {
     scale: 1.1;
+    cursor: pointer;
 }
 </style>
