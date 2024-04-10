@@ -8,7 +8,8 @@
 <script>
 export default {
     props: {
-        show: Boolean
+        show: Boolean,
+        username: String
     },
     name: 'ServicosAtribuidos',
 };

@@ -1,35 +1,50 @@
 <template>
     <div class="profile-page" v-if="show">
-        <h2>Perfil de: Diogo</h2>
+        <h2>Perfil de: {{ worker.nome }}</h2>
         <div class="profile-container">
             <div class="profile-details">
                 <div class="info-group">
-                <label>Idade</label>
-                <p>55 anos</p>
+                    <label>Idade</label>
+                    <p>{{ worker.idade }}</p>
                 </div>
-                <!-- Repeat the info group for each detail -->
                 <div class="info-group">
-                <label>Profissão</label>
-                <p>Mecânico</p>
+                    <label>Profissão</label>
+                    <p>{{ worker.profissao }}</p>
                 </div>
-                <!-- ... more fields ... -->
+                <div class="info-group">
+                    <label>Localização</label>
+                    <p>{{ worker.localizacao }}</p>
+                </div>
+                <div class="info-group">
+                    <label>Educação</label>
+                    <p>{{ worker.educacao }}</p>
+                </div>
+                <div class="info-group">
+                    <label>Especialização</label>
+                    <p>{{ worker.especializacao }}</p>
+                </div>
             </div>
             <div class="profile-interests">
-                <div class="interests">
-                <h3>Interesses</h3>
-                <p>Automóveis, futebol, séries</p>
+                <div class="info-group">
+                    <h3>Interesses</h3>
+                    <p>{{ worker.interesses }}</p>
                 </div>
-                <!-- ... -->
-                <div class="challenges">
-                <h3>Desafios</h3>
-                <p>Adaptar-se às novas tecnologias, evitar erros e reclamações</p>
+                <div class="info-group">
+                    <h3>Objetivos</h3>
+                    <p>{{ worker.objetivos }}</p>
                 </div>
-                <!-- ... more fields ... -->
+                <div class="info-group">
+                    <h3>Desafios</h3>
+                    <p>{{ worker.desafios }}</p>
+                </div>
+                <div class="info-group">
+                    <h3>Soluções</h3>
+                    <p>{{ worker.solucoes }}</p>
+                </div>
             </div>
             <div class="profile-quote">
                 <blockquote>
-                "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos..."
-                <!-- The rest of the quote -->
+                    {{ worker.citacao }}
                 </blockquote>
             </div>
         </div>
@@ -39,10 +54,26 @@
 <script>
 export default {
     props: {
-        show: Boolean
+        show: { type: Boolean, required: true },
+        username: { type: String, required: true }
     },
     name: 'ProfilePage',
-  // Add your data, methods, and other script parts as needed
+    data() {
+        return {
+            worker: null,
+            error: null // To store potential fetching errors
+        };
+    },
+    async mounted() {
+        try {
+            const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
+            if (!response.ok) throw new Error('Failed to fetch');
+            const workerC = (await response.json())[0];
+            this.worker = workerC;
+        } catch (error) {
+            this.error = error.message;
+        }
+    }
 };
 </script>
 

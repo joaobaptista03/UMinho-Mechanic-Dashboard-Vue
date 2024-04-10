@@ -7,7 +7,7 @@
                 <input type="password" id="password" placeholder="Palavra-Passe" v-model="password">
                 <p v-if="loginError" class="error-message">{{ loginError }}</p>
                 <div class="form-actions">
-                    <button type="button" id="cancelar" @click="close">Cancelar</button>
+                    <button type="button" @click="close">Cancelar</button>
                     <button type="submit">Confirmar</button>
                 </div>
             </form>
@@ -45,7 +45,7 @@ export default {
         async submitLogin() {
             if (await this.checkLogin()) {
                 this.loginError = '';
-                this.$emit('login-success');
+                this.$emit('login-success', this.username);
                 this.close();
             } else {
                 this.loginError = 'Palavra-passe e/ou email estão incorretos';
@@ -67,60 +67,24 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    top: -15%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 }
 form input {
-    width: 95%;
+    width: 100%;
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #ccc;
-    border-radius: 10px;
-
+    border-radius: 5px;
 }
 .modal-content {
     background: white;
-    border-radius: 20px;
-    width: 27%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 1%;
-    padding-bottom: 1%;    
-}
-
-.modal-content h2 {
-    color: #FF9D73;
-    font-size: 30px;
-    margin:0;
-    margin-bottom: 3%;
-}
-
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 3%;
-}
-
-.form-actions button {
-    padding: 10px 20px;
-    border: none;
+    padding: 20px;
     border-radius: 5px;
-    background: #FF9D73;
-    color: white;
-    cursor: pointer;
-    width: 40%;
-
+    width: 500px;
 }
-
-#cancelar {
-    background: #505050;
-    
-}
-
 .modal-content h2, .error-message {
     color: black;
 }

@@ -15,8 +15,8 @@
         </header>
         
         <UserProfileOverlay :show="showUserProfileOverlay" @openProfilePage="toggleProfilePage" @logout="logout"></UserProfileOverlay>
-        <ServicosAtribuidos :show="showServicosAtribuidos"></ServicosAtribuidos>
-        <ProfilePage :show="showProfilePage"></ProfilePage>
+        <ServicosAtribuidos :username="this.username" :show="showServicosAtribuidos"></ServicosAtribuidos>
+        <ProfilePage :username="this.username" :show="showProfilePage"></ProfilePage>
     </div>
 </template>
 
@@ -27,6 +27,9 @@ import UserProfileOverlay from './UserProfileOverlay.vue';
 import userProfilePic from '@/assets/profilepic.png';
 
 export default {
+    props: {
+        username: String
+    },
     components: {
         ServicosAtribuidos,
         UserProfileOverlay,

@@ -1,6 +1,6 @@
 <template>
-    <Home v-if="!isAuthenticated" @login-success="isAuthenticated = true"></Home>
-    <LoggedHome v-if="isAuthenticated" @logout="logout"></LoggedHome>
+    <Home v-if="!isAuthenticated" @login-success="authenticate"></Home>
+    <LoggedHome :username="this.username" v-if="isAuthenticated" @logout="logout"></LoggedHome>
 </template>
 
 <script>
@@ -14,12 +14,18 @@ export default {
     },
     data() {
         return {
-            isAuthenticated: false
+            isAuthenticated: false,
+            username: null
         };
     },
     methods: {
+        authenticate(username) {
+            this.isAuthenticated = true;
+            this.username = username;
+        },
         logout() {
             this.isAuthenticated = false;
+            this.username = null;
         }
     }
 };

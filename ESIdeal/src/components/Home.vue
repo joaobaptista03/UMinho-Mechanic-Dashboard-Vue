@@ -50,8 +50,8 @@ export default {
         };
     },
     methods: {
-        handleLoginSuccess() {
-            this.$emit('login-success');
+        handleLoginSuccess(username) {
+            this.$emit('login-success', username);
         }
     }
 };
