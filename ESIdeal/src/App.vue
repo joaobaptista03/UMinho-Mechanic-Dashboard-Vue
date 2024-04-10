@@ -1,6 +1,6 @@
 <template>
-        <Home v-if="!isAuthenticated" @login-success="isAuthenticated = true"></Home>
-        <LoggedHome v-if="isAuthenticated" @logout="logout"></LoggedHome>
+    <Home v-if="!isAuthenticated" @login-success="isAuthenticated = true"></Home>
+    <LoggedHome v-if="isAuthenticated" @logout="logout"></LoggedHome>
 </template>
 
 <script>

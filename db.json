@@ -209,6 +209,22 @@
       "telefone": "912345680"
     }
   ],
+  "workers": [
+    {
+      "id": "w1",
+      "nome": "António Silva",
+      "email": "antoniosilva@imail.com",
+      "telefone": "912345678",
+      "nome_utilizador": "antoniosilva1230",
+      "password": "$2a$10$I/KRjiSAzAIjXfG9l8tYTessZnmsD7r2mMUb2JizX8GeUVBpR0T1a",
+      "servicos_atribuidos": [
+        "s31",
+        "s32",
+        "s33",
+        "s34"
+      ]
+    }
+  ],
   "vehicles": [
     {
       "id": "08-25-AA",
