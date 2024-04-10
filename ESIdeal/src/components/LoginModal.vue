@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import bcrypt from 'bcryptjs';
+
 export default {
     props: ['show'],
     data() {
@@ -26,18 +28,28 @@ export default {
         }
     },
     methods: {
-        submitLogin() {
-            if (this.checkLogin(this.username, this.password)) {
+        async checkLogin() {
+            try {
+                const response = await fetch('http://localhost:3000/workers');
+                const workers = await response.json();
+                
+                const worker = workers.find(worker => worker.nome_utilizador === this.username);
+                if (!worker) return false;
+                
+                return await bcrypt.compare(this.password, worker.password);
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        },
+        async submitLogin() {
+            if (await this.checkLogin()) {
                 this.loginError = '';
                 this.$emit('login-success');
                 this.close();
             } else {
                 this.loginError = 'Palavra-passe e/ou email estão incorretos';
             }
-        },
-        checkLogin(username, password) {
-            // Simulate a check against a database
-            return username === 'user' && password === 'password';
         },
         close() {
             this.username = '';

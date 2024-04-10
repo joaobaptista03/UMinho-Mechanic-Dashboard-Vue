@@ -24,6 +24,7 @@
 import ProfilePage from './ProfilePage.vue';
 import ServicosAtribuidos from './ServicosAtribuidos.vue';
 import UserProfileOverlay from './UserProfileOverlay.vue';
+import userProfilePic from '@/assets/profilepic.png';
 
 export default {
     components: {
@@ -36,7 +37,7 @@ export default {
             showServicosAtribuidos: true,
             showUserProfileOverlay: false,
             showProfilePage: false,
-            userProfilePic: 'src/assets/profilepic.png'
+            userProfilePic: userProfilePic
         };
     },
     methods: {
