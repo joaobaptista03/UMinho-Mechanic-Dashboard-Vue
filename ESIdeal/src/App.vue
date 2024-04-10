@@ -1,8 +1,6 @@
 <template>
-    <div id="app">
         <Home v-if="!isAuthenticated" @login-success="isAuthenticated = true"></Home>
         <LoggedHome v-if="isAuthenticated" @logout="logout"></LoggedHome>
-    </div>
 </template>
 
 <script>
@@ -26,3 +24,6 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+</style>
