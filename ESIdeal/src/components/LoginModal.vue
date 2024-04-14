@@ -87,14 +87,16 @@ form input {
     width: 27%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding-left: 1.2%;
     padding-top: 1%;
     padding-bottom: 1%;  
+    padding-right: 1.2%;
 }
 
 .modal-content h2 {
-    color: #FF9D73;
-    font-size: 30px;
+    display: flex;
+    color: #1E1E1E;
+    font-size: 35px;
     margin:0;
     margin-bottom: 3%;
 }
@@ -109,7 +111,7 @@ form input {
 .form-actions button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 11px;
     background: #FF9D73;
     color: white;
     cursor: pointer;
@@ -117,10 +119,15 @@ form input {
 }
 #cancelar {
     background: #505050;
-    
 }
-.modal-content h2, .error-message {
-    color: black;
+
+h2, #username, #password {
+    font-family: 'inter' , sans-serif;
+    font-size: 15px;
+}
+
+.error-message {
+    color: #C73030;
 }
 
 </style>
