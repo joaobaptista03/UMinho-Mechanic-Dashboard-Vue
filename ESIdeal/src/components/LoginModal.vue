@@ -128,7 +128,9 @@ h2, #username, #password {
 }
 
 .error-message {
-    color: #C73030;
+    color: #C73030 !important; 
+    width: 100% !important;
+    margin: 5px;
 }
 
 </style>
