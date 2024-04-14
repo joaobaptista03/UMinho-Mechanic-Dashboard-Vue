@@ -4,7 +4,7 @@
         <header>
             <p>E.S.Ideal</p>
             <div class="navbar">
-                <p><a @click="toggleServicosAtribuidos">Serviços Atribuídos</a></p>
+                <p><a @click="toggleServicosAtribuidos" class="navlink">Serviços Atribuídos</a></p>
                 <div class="profile-container">
                     <a id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay">
                         <img :src="userProfilePic"/>
@@ -92,6 +92,29 @@ header p {
     color: #FFFFFF;
     width: 180px;
     text-align: center;
+}
+
+.navbar a.navlink {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar a.navlink::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #FF7F48;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.navbar a.navlink:hover::after {
+    width: 100%;
+    left: 0;
 }
 
 .navbar img {
