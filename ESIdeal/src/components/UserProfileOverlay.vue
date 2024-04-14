@@ -1,8 +1,8 @@
 <template>
     <div class="overlay" v-if="show">
         <div class="overlay-content">
-            <p><a @click="this.$router.push({ name: 'profilePage', params: { username: this.username } })">Ver Perfil</a></p>
-            <p><a @click="this.$router.push({ name: 'home' })">Logout</a></p>
+            <p><a @click="this.$router.push({ name: 'profilePage' })">Ver Perfil</a></p>
+            <p><a @click="logout">Logout</a></p>
         </div>
     </div>
 </template>
@@ -12,7 +12,13 @@ export default {
     props: {
         show: Boolean
     },
-    name: 'UserProfileOverlay'
+    name: 'UserProfileOverlay',
+    methods: {
+        logout() {
+            localStorage.removeItem('username');
+            this.$router.push({ name: 'home' });
+        }
+    }
 };
 </script>
 

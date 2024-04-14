@@ -8,13 +8,13 @@ const router = createRouter({
     routes: [
         { path: '/', name: "home", component: Home },
         {
-            path: '/servicosAtribuidos/:username',
+            path: '/servicosAtribuidos',
             name: 'servicosAtribuidos',
             component: ServicosAtribuidos,
             props: true
         },
         {
-            path: '/profilePage/:username',
+            path: '/profilePage',
             name: 'profilePage',
             component: ProfilePage,
             props: true
