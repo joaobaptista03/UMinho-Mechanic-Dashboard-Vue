@@ -1,53 +1,60 @@
 <template>
     <div class="profile-page" v-if="show">
-        <h2>Perfil de: {{ worker.nome }}</h2>
+        <div class="title">
+            <h2>Perfil de: <span id="worker-name">{{ worker.nome }}</span></h2>
+        </div>
         <div class="profile-container">
-            <div class="profile-details">
-                <div class="info-group">
-                    <label>Idade</label>
-                    <p>{{ worker.idade }}</p>
+            <div class="profile-column-divider">
+                <div class="profile-details">
+                    <div class="info-group">
+                        <label>Idade</label>
+                        <p>{{ worker.idade }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Profissão</label>
+                        <p>{{ worker.profissao }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Localização</label>
+                        <p>{{ worker.localizacao }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Educação</label>
+                        <p>{{ worker.educacao }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Especialização</label>
+                        <p>{{ worker.especializacao }}</p>
+                    </div>
                 </div>
-                <div class="info-group">
-                    <label>Profissão</label>
-                    <p>{{ worker.profissao }}</p>
+                <div class="profile-interests">
+                    <div class="info-group">
+                        <label>Interesses</label>
+                        <p>{{ worker.interesses }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Objetivos</label>
+                        <p>{{ worker.objetivos }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Desafios</label>
+                        <p>{{ worker.desafios }}</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Soluções</label>
+                        <p>{{ worker.solucoes }}</p>
+                    </div>
                 </div>
-                <div class="info-group">
-                    <label>Localização</label>
-                    <p>{{ worker.localizacao }}</p>
-                </div>
-                <div class="info-group">
-                    <label>Educação</label>
-                    <p>{{ worker.educacao }}</p>
-                </div>
-                <div class="info-group">
-                    <label>Especialização</label>
-                    <p>{{ worker.especializacao }}</p>
-                </div>
-            </div>
-            <div class="profile-interests">
-                <div class="info-group">
-                    <h3>Interesses</h3>
-                    <p>{{ worker.interesses }}</p>
-                </div>
-                <div class="info-group">
-                    <h3>Objetivos</h3>
-                    <p>{{ worker.objetivos }}</p>
-                </div>
-                <div class="info-group">
-                    <h3>Desafios</h3>
-                    <p>{{ worker.desafios }}</p>
-                </div>
-                <div class="info-group">
-                    <h3>Soluções</h3>
-                    <p>{{ worker.solucoes }}</p>
-                </div>
+                
             </div>
             <div class="profile-quote">
-                <blockquote>
-                    {{ worker.citacao }}
-                </blockquote>
-            </div>
+                        <label>Citação</label>
+                        <blockquote>
+                            {{ worker.citacao }}
+                        </blockquote>
+                </div>    
         </div>
+        
     </div>
 </template>
 
@@ -61,7 +68,7 @@ export default {
     data() {
         return {
             worker: null,
-            error: null // To store potential fetching errors
+            error: null 
         };
     },
     async mounted() {
@@ -78,53 +85,71 @@ export default {
 </script>
 
 <style scoped>
-.profile-page header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
+.title {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
 }
 
-.profile-page main {
-    padding: 20px;
-    display: flex;
+#worker-name {
+    color: #FF9D73;
+}
+
+.title h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.profile-container {;
+    display:flex;
     flex-direction: column;
+    background-color: #EDEDED;
+    margin: 10% auto;
+    padding: 1% 1% 1% 1%;
+    border-radius: 50px;
+    width: 70%; 
+    margin-top: 20px;
+}
+
+.profile-column-divider {
+    display: flex;
     align-items: center;
+    padding-top:4%;
+    
 }
 
-.profile-container {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    align-items: start;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
+.profile-details {
+    width: 50%;
 }
 
-.profile-photo img {
-  width: 100px; /* Adjust as necessary */
-  height: 100px; /* Adjust as necessary */
-    border-radius: 50%;
+.profile-interests {
+    width: 50%;
+    margin-left: 10%;
 }
 
-.info-group label {
+.info-group {
+    text-align: center;
+    margin-bottom: 35px; 
+}
+
+label {
     font-weight: bold;
 }
 
-.info-group p {
-    margin: 5px 0;
-}
-
-.profile-interests, .profile-quote {
-    margin-top: 20px;
+.profile-quote {
+    text-align: center;
+    display:flex;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 100%;
 }
 
 blockquote {
     font-style: italic;
 }
 
-/* Add more styles as needed */
+p {
+    margin-top:8px;
+}
+
 </style>
