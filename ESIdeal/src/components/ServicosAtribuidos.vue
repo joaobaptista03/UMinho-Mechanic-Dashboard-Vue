@@ -1,20 +1,52 @@
 <template>
-    <div class="servicosAtribuidos" v-if="show">
+    <header>
+        <p>E.S.Ideal</p>
+        <div class="navbar">
+            <p><a @click="this.$router.push({ name: 'servicosAtribuidos', params: { username: this.username } })" class="navlink">Serviços Atribuídos</a></p>
+            <div class="profile-container">
+                <a id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay">
+                    <img src="../assets/profilepic.png"/>
+                </a>  
+            </div>
+        </div>
+    </header>
+    
+    <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
+
+    <div class="servicosAtribuidos">
         <h2>Serviços Atribuídos</h2>
         
     </div>
 </template>
 
 <script>
+import UserProfileOverlay from './UserProfileOverlay.vue';
+
 export default {
     props: {
-        show: Boolean,
-        username: String
+        username: { type: String, required: true }
+    },
+    components: {
+        UserProfileOverlay
     },
     name: 'ServicosAtribuidos',
+    data() {
+        return {
+            servicosAtribuidos: [],
+            showUserProfileOverlay: false
+        }
+    },
+    async mounted() {
+        const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
+        if (!response.ok) throw new Error('Failed to fetch');
+        const servicos = (await response.json())[0].servicos_atribuidos;
+
+        for (let i = 0; i < servicos.length; i++) {
+            const response = await fetch('http://localhost:3000/services?id=' + servicos[i]);
+            if (!response.ok) throw new Error('Failed to fetch');
+            const servico = (await response.json())[0];
+            this.servicosAtribuidos.push(servico);
+        }
+    }
 };
 </script>
-
-<style>
-
-</style>

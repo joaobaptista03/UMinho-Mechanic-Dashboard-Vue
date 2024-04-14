@@ -45,7 +45,7 @@ export default {
         async submitLogin() {
             if (await this.checkLogin()) {
                 this.loginError = '';
-                this.$emit('login-success', this.username);
+                this.$router.push({ name: 'servicosAtribuidos', params: { username: this.username } });
                 this.close();
             } else {
                 this.loginError = 'Palavra-passe e/ou email estão incorretos';
