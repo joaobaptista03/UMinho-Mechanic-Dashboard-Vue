@@ -1,8 +1,8 @@
 <template>
     <div class="overlay" v-if="show">
         <div class="overlay-content">
-            <p><a @click="$emit('openProfilePage')">Ver Perfil</a></p>
-            <p><a @click="$emit('logout')">Logout</a></p>
+            <p><a @click="this.$router.push({ name: 'profilePage', params: { username: this.username } })">Ver Perfil</a></p>
+            <p><a @click="this.$router.push({ name: 'home' })">Logout</a></p>
         </div>
     </div>
 </template>
@@ -16,7 +16,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .overlay {
     position: absolute;
     right: 0;

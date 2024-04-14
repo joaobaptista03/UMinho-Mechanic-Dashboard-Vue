@@ -1,9 +1,23 @@
 <template>
-    <div class="profile-page" v-if="show">
+    <header>
+        <p>E.S.Ideal</p>
+        <div class="navbar">
+            <p><a @click="this.$router.push({ name: 'servicosAtribuidos', params: { username: this.username } })" class="navlink">Serviços Atribuídos</a></p>
+            <div class="profile-container">
+                <a id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay">
+                    <img src="../assets/profilepic.png"/>
+                </a>  
+            </div>
+        </div>
+    </header>
+
+    <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
+
+    <div v-if="worker" class="profile-page">
         <div class="title">
             <h2>Perfil de: <span id="worker-name">{{ worker.nome }}</span></h2>
         </div>
-        <div class="profile-container">
+        <div class="profile-container2">
             <div class="profile-column-divider">
                 <div class="profile-details">
                     <div class="info-group">
@@ -59,27 +73,27 @@
 </template>
 
 <script>
+import UserProfileOverlay from './UserProfileOverlay.vue';
+
 export default {
     props: {
-        show: { type: Boolean, required: true },
         username: { type: String, required: true }
+    },
+    components: {
+        UserProfileOverlay
     },
     name: 'ProfilePage',
     data() {
         return {
             worker: null,
-            error: null 
+            showUserProfileOverlay: false
         };
     },
     async mounted() {
-        try {
-            const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
-            if (!response.ok) throw new Error('Failed to fetch');
-            const workerC = (await response.json())[0];
-            this.worker = workerC;
-        } catch (error) {
-            this.error = error.message;
-        }
+        const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
+        if (!response.ok) throw new Error('Failed to fetch');
+        const workerC = (await response.json())[0];
+        this.worker = workerC;
     }
 };
 </script>
@@ -100,7 +114,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.profile-container {;
+.profile-container2 {;
     display:flex;
     flex-direction: column;
     background-color: #EDEDED;
@@ -148,7 +162,7 @@ blockquote {
     font-style: italic;
 }
 
-p {
+.info-group p {
     margin-top:8px;
 }
 
