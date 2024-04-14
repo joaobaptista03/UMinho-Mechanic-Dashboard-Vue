@@ -2,7 +2,7 @@
 
     <nav class="navbar">
         <p>E.S.Ideal</p>   
-        <div class = "loginbutton">
+        <div class="loginbutton">
             <LoginButton @login-clicked="showLoginModal = true"></LoginButton>
             <LoginModal
                 :show="showLoginModal"
