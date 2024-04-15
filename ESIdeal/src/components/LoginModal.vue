@@ -17,6 +17,7 @@
 
 <script>
 import bcrypt from 'bcryptjs';
+import { useUserStore } from '../stores';
 
 export default {
     props: ['show'],
@@ -43,9 +44,11 @@ export default {
             }
         },
         async submitLogin() {
+            const userStore = useUserStore();
+
             if (await this.checkLogin()) {
                 this.loginError = '';
-                localStorage.setItem('username', this.username);
+                userStore.setUser(this.username);
                 this.$router.push({ name: 'servicosAtribuidos' });
                 this.close();
             } else {

@@ -29,6 +29,7 @@
 
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
+import { useUserStore } from '../stores';
 
 export default {
     components: {
@@ -37,12 +38,16 @@ export default {
     name: 'ServicosAtribuidos',
     data() {
         return {
-            username: localStorage.getItem('username'),
+            username: null,
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false
         }
     },
     async mounted() {
+        const userStore = useUserStore();
+        this.username = userStore.username;
+        if (!this.username) this.$router.push({ name: 'home' });
+        
         const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
         if (!response.ok) throw new Error('Failed to fetch');
         const servicos = (await response.json())[0].servicos_atribuidos;

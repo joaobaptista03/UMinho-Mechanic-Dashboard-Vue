@@ -8,14 +8,17 @@
 </template>
 
 <script>
+import { useUserStore } from '../stores';
 export default {
+
     props: {
         show: Boolean
     },
     name: 'UserProfileOverlay',
     methods: {
         logout() {
-            localStorage.removeItem('username');
+            const userStore = useUserStore();
+            userStore.setUser(null);
             this.$router.push({ name: 'home' });
         }
     }
