@@ -3,107 +3,107 @@
     {
       "id": "sp",
       "descr": "Substituir pneus",
-      "duração": 40
+      "duracao": 40
     },
     {
       "id": "cr",
       "descr": "Calibrar rodas",
-      "duração": 20
+      "duracao": 20
     },
     {
       "id": "ad",
       "descr": "Alinhar direção",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sct",
       "descr": "Subsituir calços travões",
-      "duração": 60
+      "duracao": 60
     },
     {
       "id": "mot",
       "descr": "Mudar óleo travões",
-      "duração": 20
+      "duracao": 20
     },
     {
       "id": "li",
       "descr": "Limpeza interior",
-      "duração": 120
+      "duracao": 120
     },
     {
       "id": "le",
       "descr": "Limpeza exterior",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sfah",
       "descr": "Substituir filtro ar habitáculo",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "mom",
       "descr": "Mudar óleo motor",
-      "duração": 10
+      "duracao": 10
     },
     {
       "id": "sfo",
       "descr": "Substituir filtro óleo",
-      "duração": 20
+      "duracao": 20
     },
     {
       "id": "sfc",
       "descr": "Substituir filtro combustível",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sfam",
       "descr": "Substituir filtro ar motor",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "scc",
       "descr": "Substituir conversor catalítico",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sba",
       "descr": "Substituir bateria de arranque",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "svi",
       "descr": "Substituir velas de incandescência",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sfp",
       "descr": "Substituir filtro de partículas",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "rfp",
       "descr": "Regenerar filtro de partículas",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sva",
       "descr": "Substituir válvula do acelerador",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "svi",
       "descr": "Substituir velas de ignição",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "adb",
       "descr": "Avaliar desempenho da bateria",
-      "duração": 30
+      "duracao": 30
     },
     {
       "id": "sb",
       "descr": "Substituir bateria",
-      "duração": 20
+      "duracao": 20
     }
   ],
   "vehicle-types": [
@@ -271,6 +271,13 @@
       "service-definitionId": "sp",
       "estado": "nafila",
       "agendamento": "filaDeEspera",
+      "data": {
+        "dia": 99,
+        "mes": 99,
+        "ano": 9999,
+        "hora": 99,
+        "minutos": 99
+      },
       "descrição": "Colocar XPTO 225R15"
     },
     {
@@ -294,6 +301,13 @@
       "service-definitionId": "le",
       "estado": "nafila",
       "agendamento": "filaDeEspera",
+      "data": {
+        "dia": 99,
+        "mes": 99,
+        "ano": 9999,
+        "hora": 99,
+        "minutos": 99
+      },
       "descrição": "Ver jantes."
     },
     {
@@ -302,6 +316,13 @@
       "service-definitionId": "sfc",
       "estado": "parado",
       "agendamento": "filaDeEspera",
+      "data": {
+        "dia": 99,
+        "mes": 99,
+        "ano": 9999,
+        "hora": 99,
+        "minutos": 99
+      },
       "descrição": "Falta o filtro."
     },
     {
@@ -310,6 +331,13 @@
       "service-definitionId": "sp",
       "estado": "realizado",
       "agendamento": "filaDeEspera",
+      "data": {
+        "dia": 99,
+        "mes": 99,
+        "ano": 99,
+        "hora": 99,
+        "minutos": 99
+      },
       "descrição": "Colocar XPTO 225R15"
     },
     {
@@ -319,8 +347,8 @@
       "estado": "realizado",
       "agendamento": "programado",
       "data": {
-        "dia": 2,
-        "mes": 2,
+        "dia": 26,
+        "mes": 3,
         "ano": 2024,
         "hora": 14,
         "minutos": 15
