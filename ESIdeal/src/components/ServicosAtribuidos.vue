@@ -12,47 +12,36 @@
     <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
 
     <div class="servicosAtribuidos">
-        <!--
-        <div v-for="servico in servicosAtribuidos" :key="servico.id">
-            <div class="servico">
-                    <h2>{{ servico.id }}</h2>
-                    <p>{{ servico.vehicleId }}</p>
-                    <p>{{ servico.descrição }}</p>
-                    <p>{{ servico.agendamento }}</p>
-                    <p v-if="servico.agendamento === 'programado'">{{ servico.data }}</p>
-            </div>
-        </div>
-        -->
-
         <div class="ordenar">
             <button @click="toggleOptions" class="expand-button">Ordenar por</button>
             <div class="options" v-show="showOptions">
-                <button @click="orderServicos('option1')" class="option-button">Data de serviço</button>
-                <button @click="orderServicos('option2')" class="option-button">Data final prevista</button>
-                <button @click="orderServicos('option3')" class="option-button">Ordem de chegada</button>
+                <button @click="orderServicos('dataInicio')" class="option-button">Data de serviço</button>
+                <button @click="orderServicos('dataPrevista')" class="option-button">Data final prevista</button>
             </div>
         </div>
 
-        <div class="servico">
-            <div class="parte1">
-                <p><b>ID: </b>32</p>
-                <p><b>Matrícula: </b> 1234-AB</p>
-                <div class="processo">
-                    <p><b>Serviço: Mudança de óleo</b></p>
-                </div>
-            </div>
-            <div class="parte2">
-                <div class="datahora">
-                    <div class="data">
-                        <p class="dia"><b>27</b></p>
-                        <p>Mar</p>
-                    </div>
-                    <div class="hora">
-                        <img src="../assets/clock.png" alt="relogio">
-                        <p>14:05</p>
+        <div v-for="servico in servicosAtribuidos[page - 1]">
+            <div class="servico">
+                <div class="parte1">
+                    <p><b>ID: </b>{{servico.id}}</p>
+                    <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
+                    <div class="processo">
+                        <p><b>Serviço: {{servico.definition.descr}}</b></p>
                     </div>
                 </div>
-                <p class="descricao"><b>Descrição: </b>Ver jantes</p>
+                <div class="parte2">
+                    <div class="datahora">
+                        <div class="data">
+                            <p class="dia"><b>{{servico.data.dia}}</b></p>
+                            <p>{{servico.data.mes}}</p>
+                        </div>
+                        <div class="hora">
+                            <img src="../assets/clock.png" alt="relogio">
+                            <p> {{servico.data.hora}}:{{servico.data.minutos}} </p>
+                        </div>
+                    </div>
+                    <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +63,8 @@ export default {
             username: null,
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false,
-            showOptions: false
+            showOptions: false,
+            page: 1
         }
     },
     async mounted() {
@@ -111,7 +101,12 @@ export default {
                 this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
         }
 
-        this.orderServicos('dataInicio');
+        const page = this.$route.query.p;
+        if (page && page > 0 && page <= this.servicosAtribuidos.length) this.page = page;
+
+        const orderBy = this.$route.query.orderBy;
+        if (orderBy && orderBy == 'dataPrevista') this.orderServicos('dataPrevista');
+        else this.orderServicos('dataInicio');
     },
     methods: {
         orderServicos(mode) {
@@ -144,13 +139,6 @@ export default {
         },
         toggleOptions() {
             this.showOptions = !this.showOptions;
-        },
-        orderServicos(option) {
-            // Your ordering logic depending on the option clicked
-            console.log('Ordering by:', option);
-            // Implement the ordering logic here
-            // Collapse the options after selection
-            this.showOptions = false;
         }
     }
 };
