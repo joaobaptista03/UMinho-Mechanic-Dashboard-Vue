@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="parte2">
-                    <div class="datahora">
+                    <div class="datahora" v-if="servico.data.ano != 9999" >
                         <div class="data">
                             <p class="dia"><b>{{servico.data.dia}}</b></p>
                             <p>{{servico.data.mes}}</p>
@@ -107,6 +107,8 @@ export default {
         const orderBy = this.$route.query.orderBy;
         if (orderBy && orderBy == 'dataPrevista') this.orderServicos('dataPrevista');
         else this.orderServicos('dataInicio');
+
+        console.log(this.servicosAtribuidos);
     },
     methods: {
         orderServicos(mode) {
