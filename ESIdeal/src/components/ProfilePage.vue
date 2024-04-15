@@ -112,7 +112,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.profile-container2 {;
+.profile-container2 {
     display:flex;
     flex-direction: column;
     background-color: #EDEDED;

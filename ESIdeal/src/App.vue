@@ -64,14 +64,19 @@ header p {
     left: 0;
 }
 
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 15%;
+    cursor: pointer;
+}
+
 .navbar img {
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    padding-right: 20%;
 }
 
-#nav-img {
-    margin-right: 10%;
-}
+
 </style>

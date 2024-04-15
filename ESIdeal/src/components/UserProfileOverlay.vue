@@ -33,16 +33,16 @@ export default {
 
 .overlay-content {
     background-color: #EDEDED;
-    border-radius: 5px;
+    border-radius: 10px;
 
 }
 
 .overlay-content p {
-    padding: 1% 5% 1% 1%;
     font-family: 'open sans', sans-serif;
     font-size: 15px;
     color: black;
     width: 180px;
     text-align: center;
+    cursor: pointer;
 }
 </style>

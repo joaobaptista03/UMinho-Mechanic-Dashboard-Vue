@@ -4,9 +4,7 @@
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
-                <a id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay">
-                    <img src="../assets/profilepic.png"/>
-                </a>  
+                <img src="../assets/profilepic.png" id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay" />
             </div>
         </div>
     </header>
