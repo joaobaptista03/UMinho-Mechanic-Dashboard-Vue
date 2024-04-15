@@ -18,7 +18,7 @@ export default {
     methods: {
         logout() {
             const userStore = useUserStore();
-            userStore.setUser(null);
+            userStore.clearUser();
             this.$router.push({ name: 'home' });
         }
     }
