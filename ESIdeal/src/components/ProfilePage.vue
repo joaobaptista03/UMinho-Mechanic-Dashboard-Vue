@@ -90,7 +90,7 @@ export default {
     },
     async mounted() {
         const userStore = useUserStore();
-        this.username = userStore.username;
+        this.username = userStore.getUser();
         if (!this.username) this.$router.push({ name: 'home' });
 
         const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);

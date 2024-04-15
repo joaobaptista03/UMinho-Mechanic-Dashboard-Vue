@@ -10,6 +10,9 @@ export const useUserStore = defineStore('user', {
         },
         clearUser() {
             this.username = null;
+        },
+        getUser() {
+            return this.username;
         }
     }
 });
