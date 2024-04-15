@@ -12,9 +12,19 @@
     <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
 
     <div class="servicosAtribuidos">
-        <h2>Serviços Atribuídos</h2>
-        
+        <h1>Serviços Atribuídos</h1>
+        <div v-for="servico in servicosAtribuidos" :key="servico.id">
+            <div class="containerservico">
+                    <h2>{{ servico.id }}</h2>
+                    <p>{{ servico.vehicleId }}</p>
+                    <p>{{ servico.descrição }}</p>
+                    <p>{{ servico.agendamento }}</p>
+                    <p v-if="servico.agendamento === 'programado'">{{ servico.data }}</p>
+            </div>
+        </div>
     </div>
+
+
 </template>
 
 <script>
@@ -46,3 +56,16 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+
+.servicosAtribuidos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+</style>
