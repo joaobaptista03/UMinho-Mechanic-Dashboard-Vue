@@ -12,14 +12,47 @@
     <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
 
     <div class="servicosAtribuidos">
-        <h1>Serviços Atribuídos</h1>
+        <!--
         <div v-for="servico in servicosAtribuidos" :key="servico.id">
-            <div class="containerservico">
+            <div class="servico">
                     <h2>{{ servico.id }}</h2>
                     <p>{{ servico.vehicleId }}</p>
                     <p>{{ servico.descrição }}</p>
                     <p>{{ servico.agendamento }}</p>
                     <p v-if="servico.agendamento === 'programado'">{{ servico.data }}</p>
+            </div>
+        </div>
+        -->
+
+        <div class="ordenar">
+            <button @click="toggleOptions" class="expand-button">Ordenar por</button>
+            <div class="options" v-show="showOptions">
+                <button @click="orderServicos('option1')" class="option-button">Data de serviço</button>
+                <button @click="orderServicos('option2')" class="option-button">Data final prevista</button>
+                <button @click="orderServicos('option3')" class="option-button">Ordem de chegada</button>
+            </div>
+        </div>
+
+        <div class="servico">
+            <div class="parte1">
+                <p><b>ID: </b>32</p>
+                <p><b>Matrícula: </b> 1234-AB</p>
+                <div class="processo">
+                    <p><b>Serviço: Mudança de óleo</b></p>
+                </div>
+            </div>
+            <div class="parte2">
+                <div class="datahora">
+                    <div class="data">
+                        <p class="dia"><b>27</b></p>
+                        <p>Mar</p>
+                    </div>
+                    <div class="hora">
+                        <img src="../assets/clock.png" alt="relogio">
+                        <p>14:05</p>
+                    </div>
+                </div>
+                <p class="descricao"><b>Descrição: </b>Ver jantes</p>
             </div>
         </div>
     </div>
@@ -39,7 +72,8 @@ export default {
         return {
             username: localStorage.getItem('username'),
             servicosAtribuidos: [[]],
-            showUserProfileOverlay: false
+            showUserProfileOverlay: false,
+            showOptions: false
         }
     },
     async mounted() {
@@ -102,6 +136,16 @@ export default {
                 else
                     this.servicosAtribuidos.push([allServicos[i]]);
             }
+        },
+        toggleOptions() {
+            this.showOptions = !this.showOptions;
+        },
+        orderServicos(option) {
+            // Your ordering logic depending on the option clicked
+            console.log('Ordering by:', option);
+            // Implement the ordering logic here
+            // Collapse the options after selection
+            this.showOptions = false;
         }
     }
 };
@@ -114,6 +158,140 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.servico{
+    display: flex;
+    background-color: #EDEDED;
+    border-radius: 30px;
+    width: 60%;
+    justify-content: space-around;
+}
+
+.parte1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1%;
+}
+
+.processo{
+}
+
+.processo p{
+    margin: 5% 20px;
+}
+
+.parte2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1%;
+}
+
+.descricao{
+    margin-bottom: 0;
+}
+.datahora{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+.data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    background-color: #FF7F48;
+    border-radius: 10px;
+    padding: 9%;
+}
+
+.data p{
+    margin: 0;
+}
+
+.dia{
+    font-size: 20px;
+}
+
+.hora{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #FF7F48;
+    border-radius: 10px;
+    padding:6.5%;
+}
+
+.hora p{
+    margin: 0;
+}
+
+.processo{
+    background-color: #FF7F48;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+
+.ordenar {
+    position: relative;
+    margin: 20px 0;
+}
+
+.expand-button {
+    background-color: #FF7F48;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.expand-button:hover {
+    background-color: #e76e3c; 
+}
+
+.options {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.options.show {
+    display: flex;
+}
+
+.option-button {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.option-button:hover {
+    background-color: #f2f2f2;
 }
 
 
