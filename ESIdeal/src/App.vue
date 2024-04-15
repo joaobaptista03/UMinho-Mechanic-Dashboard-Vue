@@ -70,6 +70,11 @@ header p {
     align-items: center;
     margin-right: 15%;
     cursor: pointer;
+    transition: .5s ease;
+}
+
+.profile-container:hover {
+    transform: scale(1.1);
 }
 
 .navbar img {

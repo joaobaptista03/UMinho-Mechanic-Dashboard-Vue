@@ -55,6 +55,7 @@
                 <p class="descricao"><b>Descrição: </b>Ver jantes</p>
             </div>
         </div>
+    
     </div>
 
 
@@ -144,13 +145,6 @@ export default {
         },
         toggleOptions() {
             this.showOptions = !this.showOptions;
-        },
-        orderServicos(option) {
-            // Your ordering logic depending on the option clicked
-            console.log('Ordering by:', option);
-            // Implement the ordering logic here
-            // Collapse the options after selection
-            this.showOptions = false;
         }
     }
 };
@@ -163,6 +157,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: 'open sans', sans-serif;
 }
 
 .servico{
@@ -171,6 +166,7 @@ export default {
     border-radius: 30px;
     width: 60%;
     justify-content: space-around;
+    margin-bottom: 2%;
 }
 
 .parte1{
@@ -182,10 +178,13 @@ export default {
 }
 
 .processo{
+    background-color: #FF7F48;
+    border-radius: 15px;
+    width: fit-content;
 }
 
 .processo p{
-    margin: 5% 20px;
+    margin: 3% 60px;
 }
 
 .parte2{
@@ -193,7 +192,6 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1%;
 }
 
 .descricao{
@@ -215,7 +213,7 @@ export default {
     height: fit-content;
     background-color: #FF7F48;
     border-radius: 10px;
-    padding: 9%;
+    padding: 9% 13%;
 }
 
 .data p{
@@ -233,19 +231,12 @@ export default {
     align-items: center;
     background-color: #FF7F48;
     border-radius: 10px;
-    padding:6.5%;
+    padding:6.5% 9%;
 }
 
 .hora p{
     margin: 0;
 }
-
-.processo{
-    background-color: #FF7F48;
-    border-radius: 20px;
-    width: fit-content;
-}
-
 
 .ordenar {
     position: relative;
