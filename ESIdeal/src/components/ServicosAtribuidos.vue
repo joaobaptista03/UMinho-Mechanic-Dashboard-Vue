@@ -15,8 +15,8 @@
         <div class="ordenar">
             <button @click="toggleOptions" class="expand-button">Ordenar por</button>
             <div class="options" v-show="showOptions">
-                <button @click="orderServicos('dataInicio')" class="option-button">Data de serviço</button>
-                <button @click="orderServicos('dataPrevista')" class="option-button">Data final prevista</button>
+                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
+                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
             </div>
         </div>
 
@@ -44,8 +44,13 @@
                 </div>
             </div>
         </div>
-    </div>
 
+        <div class="pagination">
+            <button @click="changePage(-1)" :disabled="this.page == 1">Previous</button>
+            <button v-for="pageNumber in totalPages" :key="pageNumber" @click="changePage(pageNumber)" :class="{ active: pageNumber === page }">{{ pageNumber }}</button>
+            <button @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">Next</button>
+        </div>
+    </div>
 
 </template>
 
@@ -67,7 +72,7 @@ export default {
             page: 1
         }
     },
-    async mounted() {
+    async created() {
         const userStore = useUserStore();
         this.username = userStore.getUser();
         if (!this.username) this.$router.push({ name: 'home' });
@@ -101,17 +106,24 @@ export default {
                 this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
         }
 
-        const page = this.$route.query.p;
-        if (page && page > 0 && page <= this.servicosAtribuidos.length) this.page = page;
-
-        const orderBy = this.$route.query.orderBy;
-        if (orderBy && orderBy == 'dataPrevista') this.orderServicos('dataPrevista');
-        else this.orderServicos('dataInicio');
-
-        console.log(this.servicosAtribuidos);
+        this.orderServicos('dataInicio');
+    },
+    watch: {
+        '$route.query.orderBy'(newVal, oldVal) {
+            if (newVal) {
+                this.orderServicos(newVal);
+            }
+        },
+        '$route.query.p'(newVal, oldVal) {
+            if (newVal) {
+                this.page = newVal;
+            }
+        }
     },
     methods: {
         orderServicos(mode) {
+            this.page = 1;
+            this.showOptions = false;
             const allServicos = this.servicosAtribuidos.flat();
 
             allServicos.sort((a, b) => {
@@ -141,6 +153,11 @@ export default {
         },
         toggleOptions() {
             this.showOptions = !this.showOptions;
+        },
+        changePage(p) {
+            this.page = parseInt(this.page);
+            this.page += parseInt(p);
+            this.$router.push({ query: { p: this.page } });
         }
     }
 };
@@ -169,9 +186,6 @@ export default {
     justify-content: center;
     align-items: center;
     margin-bottom: 1%;
-}
-
-.processo{
 }
 
 .processo p{
@@ -258,7 +272,6 @@ export default {
 }
 
 .options {
-    display: none;
     flex-direction: column;
     position: absolute;
     top: 100%;
