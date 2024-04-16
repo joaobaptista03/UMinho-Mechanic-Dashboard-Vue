@@ -39,6 +39,12 @@
                             <p> {{servico.data.hora}}:{{servico.data.minutos}} </p>
                         </div>
                     </div>
+                    <div class="espera" v-if="servico.data.ano == 9999" >
+                        <div class="emespera">
+                            <img src="../assets/espera.png" alt="espera">
+                            <p>Espera</p>
+                        </div>
+                    </div>
                     <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
                 </div>
         </div>
@@ -150,6 +156,7 @@ export default {
             }
         },
         toggleOptions() {
+            console.log(this.showOptions)
             this.showOptions = !this.showOptions;
         },
         changePage(p) {
@@ -178,6 +185,10 @@ export default {
     width: 55%;
 }
 
+.servico p{
+    cursor:default;
+}
+
 .parte1{
     display: flex;
     flex-direction: column;
@@ -187,8 +198,15 @@ export default {
     width: 50%;
 }
 
+.processo{
+    background-color: #FF7F48;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+}
+
 .processo p{
-    margin: 5% 20px;
+    margin: 6px 50px;
 }
 
 .parte2{
@@ -200,9 +218,7 @@ export default {
     width: 45%;
 }
 
-.descricao{
-    margin: 2% 0px;
-}
+
 .datahora{
     display: flex;
     width: 30%;
@@ -232,7 +248,7 @@ export default {
 .hora{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     background-color: #FF7F48;
     border-radius: 5px;
@@ -248,12 +264,36 @@ export default {
     height: 20px;
 }
 
-.processo{
-    background-color: #FF7F48;
-    border-radius: 20px;
-    width: fit-content;
+.espera{
+    display: flex;
+    width: 30%;
+    justify-content: end;
+    align-items: start;
+    height: 60%;
 }
 
+.emespera{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FF7F48;
+    border-radius: 5px;
+    padding: 6.5px 4.3px;
+}
+
+.emespera p{
+    margin: 0;
+}
+
+.emespera img{
+    width: 20px;
+    height: 20px;
+}
+
+.descricao{
+    margin: 2% 0px;
+}
 
 .ordenar {
     position: relative;
@@ -274,6 +314,8 @@ export default {
 .expand-button:hover {
     background-color: #e76e3c; 
 }
+
+/*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 
 .options {
     flex-direction: column;

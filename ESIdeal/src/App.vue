@@ -37,7 +37,7 @@ header p {
     font-family: 'open sans', sans-serif;
     font-size: 15px;
     color: #FFFFFF;
-    width: 180px;
+    width: 250px;
     text-align: center;
 }
 
