@@ -20,8 +20,7 @@
             </div>
         </div>
 
-        <div v-for="servico in servicosAtribuidos[page - 1]">
-            <div class="servico">
+        <div class ="servico" v-for="servico in servicosAtribuidos[page - 1]">
                 <div class="parte1">
                     <p><b>ID: </b>{{servico.id}}</p>
                     <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
@@ -42,7 +41,6 @@
                     </div>
                     <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
                 </div>
-            </div>
         </div>
     </div>
 
@@ -159,8 +157,8 @@ export default {
     display: flex;
     background-color: #EDEDED;
     border-radius: 30px;
-    justify-content: space-around;
-    margin-bottom: 6%;
+    margin-bottom: 3%;
+    width: 55%;
 }
 
 .parte1{
@@ -169,6 +167,7 @@ export default {
     justify-content: center;
     align-items: center;
     margin-bottom: 1%;
+    width: 50%;
 }
 
 .processo{
@@ -181,20 +180,21 @@ export default {
 .parte2{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: end;
+    align-items: end;
     margin-bottom: 1%;
+    width: 45%;
 }
 
 .descricao{
-    margin-bottom: 0;
+    margin: 2% 0px;
 }
 .datahora{
     display: flex;
+    width: 30%;
     justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 5%;
+    align-items: start;
+    height: 60%;
 }
 
 .data{
@@ -202,10 +202,9 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: fit-content;
     background-color: #FF7F48;
-    border-radius: 10px;
-    padding: 9%;
+    border-radius: 5px;
+    padding: 5px 16px;
 }
 
 .data p{
@@ -222,12 +221,17 @@ export default {
     justify-content: space-around;
     align-items: center;
     background-color: #FF7F48;
-    border-radius: 10px;
-    padding:6.5%;
+    border-radius: 5px;
+    padding: 6.5px 7.8px;
 }
 
 .hora p{
     margin: 0;
+}
+
+.hora img{
+    width: 20px;
+    height: 20px;
 }
 
 .processo{
