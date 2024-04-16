@@ -159,8 +159,8 @@ export default {
     display: flex;
     background-color: #EDEDED;
     border-radius: 30px;
-    width: 60%;
     justify-content: space-around;
+    margin-bottom: 6%;
 }
 
 .parte1{
