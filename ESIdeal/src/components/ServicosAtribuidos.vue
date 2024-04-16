@@ -104,7 +104,7 @@ export default {
 
         for (let i = 0; i < servicosAtribuidosTemp.length; i++) {
             if (servicosAtribuidosTemp[i].estado == 'realizado') continue;
-            if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 3)
+            if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
                 this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
             else
                 this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
@@ -179,7 +179,7 @@ export default {
     display: flex;
     background-color: #EDEDED;
     border-radius: 30px;
-    margin-bottom: 3%;
+    margin-bottom: 2%;
     width: 55%;
 }
 
