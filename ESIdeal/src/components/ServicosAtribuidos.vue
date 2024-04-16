@@ -103,8 +103,6 @@ export default {
             else
                 this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
         }
-
-        this.orderServicos('dataInicio');
     },
     watch: {
         '$route.query.orderBy'(newVal, oldVal) {
