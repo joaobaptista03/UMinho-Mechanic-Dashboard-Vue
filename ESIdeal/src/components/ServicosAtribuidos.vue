@@ -47,7 +47,7 @@
 
         <div class="pagination">
             <button @click="changePage(-1)" :disabled="this.page == 1">Previous</button>
-            <button v-for="pageNumber in totalPages" :key="pageNumber" @click="changePage(pageNumber)" :class="{ active: pageNumber === page }">{{ pageNumber }}</button>
+            <span>Página {{this.page}}</span>
             <button @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">Next</button>
         </div>
     </div>
