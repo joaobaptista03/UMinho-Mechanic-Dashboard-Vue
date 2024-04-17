@@ -32,7 +32,7 @@
                     <div class="datahora" v-if="servico.data.ano != 9999" >
                         <div class="data">
                             <p class="dia"><b>{{servico.data.dia}}</b></p>
-                            <p>{{servico.data.mes}}</p>
+                            <p>{{nomeMes(servico.data.mes)}}</p>
                         </div>
                         <div class="hora">
                             <img src="../assets/clock.png" alt="relogio">
@@ -165,6 +165,11 @@ export default {
             this.page = parseInt(this.page);
             this.page += parseInt(p);
             this.$router.push({ query: { p: this.page } });
+        },
+        nomeMes(mes) {
+            const data = new Date(2024, mes - 1); 
+            let mesExtenso = data.toLocaleString('pt-PT', { month: 'long' });
+            return mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1, 3).toLowerCase();
         }
     }
 };
@@ -237,7 +242,7 @@ export default {
     align-items: center;
     background-color: #FF7F48;
     border-radius: 5px;
-    padding: 5px 16px;
+    padding: 5px 13.7px;
 }
 
 .data p{
