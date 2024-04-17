@@ -13,7 +13,7 @@
 
     <div class="servicosAtribuidos">
         <div class="ordenar">
-            <button @click="toggleOptions" class="expand-button">Ordenar por</button>
+            <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
             <div class="options" v-show="showOptions">
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
@@ -282,7 +282,7 @@ export default {
     align-items: center;
     background-color: #FF7F48;
     border-radius: 5px;
-    padding: 6.5px 4.3px;
+    padding: 6.5px 2.3px;
 }
 
 .emespera p{
