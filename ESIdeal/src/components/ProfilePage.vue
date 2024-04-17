@@ -111,21 +111,25 @@ export default {
     color: #FF9D73;
 }
 
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .title h2 {
     font-family: 'Open Sans', sans-serif;
     font-size: 35px;
-    margin-bottom: 20px;
+    margin: 35px 0px;
 }
 
 .profile-container2 {
     display:flex;
     flex-direction: column;
     background-color: #EDEDED;
-    margin: 10% auto;
-    padding: 1% 1% 1% 1%;
+    padding: 1% ;
     border-radius: 50px;
     width: 70%; 
-    margin-top: 20px;
 }
 
 .profile-column-divider {
