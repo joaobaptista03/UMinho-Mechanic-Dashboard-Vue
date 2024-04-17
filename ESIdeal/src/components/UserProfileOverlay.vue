@@ -1,9 +1,9 @@
 <template>
-    <div class="overlay" v-if="show">
-        <div class="overlay-content">
-            <p><a @click="this.$router.push({ name: 'profilePage' })">Ver Perfil</a></p>
-            <p><a @click="logout">Logout</a></p>
-        </div>
+    <div class="overlay" v-if="show" @click.self="hideOverlay">
+            <div class="overlay-content">
+                <p><a @click="this.$router.push({ name: 'profilePage' })">Ver Perfil</a></p>
+                <p><b><a @click="logout">Logout</a></b></p>
+            </div>
     </div>
 </template>
 
@@ -20,6 +20,10 @@ export default {
             const userStore = useUserStore();
             userStore.clearUser();
             this.$router.push({ name: 'home' });
+        },
+        hideOverlay() {
+            console.log('hideOverlay');
+            this.$emit('close'); // fecha o menu em caso de clicar fora do overlay
         }
     }
 };
@@ -27,25 +31,33 @@ export default {
 
 <style scoped>
 .overlay {
-    position: absolute;
+    position: absolute; /*Para que possamos preencher o viewport a 100% */
     right: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    padding-right: 0.5%;
+    justify-content: end;
+    align-items: start;
     z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
 }
 
 .overlay-content {
     background-color: #EDEDED;
     border-radius: 10px;
+    position: absolute;
+    right: 0; /* Encostar ao canto direito do overlay que tem widht=100% */
+    width: 180px; 
+    padding: 10px; 
 }
 
 .overlay-content p {
     font-family: 'open sans', sans-serif;
     font-size: 15px;
     color: black;
-    width: 180px;
     text-align: center;
     cursor: pointer;
+    margin: 0; /* Remove default margin */
 }
 
 .overlay-content p:hover {

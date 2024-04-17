@@ -11,7 +11,7 @@
         </div>
     </header>
 
-    <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
+    <UserProfileOverlay :show="showUserProfileOverlay" @close="toggleOverlay" ></UserProfileOverlay>
 
     <div v-if="worker" class="profile-page">
         <div class="title">
@@ -97,6 +97,11 @@ export default {
         if (!response.ok) throw new Error('Failed to fetch');
         const workerC = (await response.json())[0];
         this.worker = workerC;
+    },
+    methods:{
+        toggleOverlay() {
+            this.showUserProfileOverlay = !this.showUserProfileOverlay;
+        }
     }
 };
 </script>
