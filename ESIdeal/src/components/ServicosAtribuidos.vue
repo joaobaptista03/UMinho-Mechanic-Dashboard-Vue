@@ -50,9 +50,13 @@
         </div>
 
         <div class="pagination">
-            <button @click="changePage(-1)" :disabled="this.page == 1">Previous</button>
+            <button class="previous" v-if="this.page != 1" @click="changePage(-1)" :disabled="this.page == 1">
+                <img src="../assets/paganterior.png" alt="Previous" class="button-icon">
+            </button>
             <span>Página {{this.page}}</span>
-            <button @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">Next</button>
+            <button class="next" v-if="this.page != this.servicosAtribuidos.length" @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">
+                <img src="../assets/pagseguinte.png" alt="Previous" class="button-icon">
+            </button>
         </div>
     </div>
 
@@ -173,6 +177,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: 'open sans', sans-serif;
 }
 
 .servico{
@@ -293,6 +298,27 @@ export default {
     margin: 2% 0px;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination span {
+    font-size: 17px;
+}
+
+.pagination button {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+/*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 .ordenar {
     position: relative;
     margin: 20px 0;
@@ -300,20 +326,21 @@ export default {
 
 .expand-button {
     background-color: #FF7F48;
-    color: white;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 20px;
     padding: 10px 20px;
     cursor: pointer;
     outline: none;
     transition: background-color 0.3s;
+    font-size: 17px;
 }
+
 
 .expand-button:hover {
     background-color: #e76e3c; 
 }
 
-/*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 
 .options {
     flex-direction: column;

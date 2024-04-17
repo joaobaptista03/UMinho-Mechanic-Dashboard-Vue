@@ -35,7 +35,7 @@ header p {
 
 .navbar p { /* Cada link do navbar */
     font-family: 'open sans', sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     color: #FFFFFF;
     width: 250px;
     text-align: center;

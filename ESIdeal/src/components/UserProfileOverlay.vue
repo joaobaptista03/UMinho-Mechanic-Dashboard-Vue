@@ -37,7 +37,6 @@ export default {
 .overlay-content {
     background-color: #EDEDED;
     border-radius: 10px;
-
 }
 
 .overlay-content p {
@@ -48,4 +47,9 @@ export default {
     text-align: center;
     cursor: pointer;
 }
+
+.overlay-content p:hover {
+    text-decoration: underline;
+}
+
 </style>
