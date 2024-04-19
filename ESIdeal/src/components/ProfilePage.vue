@@ -2,7 +2,7 @@
     <header>
         <p>E.S.Ideal</p>
         <div class="navbar">
-            <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
+            <p><a @click="this.$router.push({name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
                 <a id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay">
                     <img src="../assets/profilepic.png"/>

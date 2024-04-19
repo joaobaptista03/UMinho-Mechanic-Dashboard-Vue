@@ -39,7 +39,7 @@ export default {
     justify-content: end;
     align-items: start;
     z-index: 999;
-    background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5); 
 }
 
 .overlay-content {

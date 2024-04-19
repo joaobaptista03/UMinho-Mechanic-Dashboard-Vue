@@ -9,7 +9,7 @@
         </div>
     </header>
     
-    <UserProfileOverlay :show="showUserProfileOverlay" ></UserProfileOverlay>
+    <UserProfileOverlay :show="showUserProfileOverlay" @close="toggleOverlay"></UserProfileOverlay>
 
     <div class="servicosAtribuidos">
         <div class="ordenar">
@@ -170,6 +170,9 @@ export default {
             const data = new Date(2024, mes - 1); 
             let mesExtenso = data.toLocaleString('pt-PT', { month: 'long' });
             return mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1, 3).toLowerCase();
+        },
+        toggleOverlay() {
+            this.showUserProfileOverlay = !this.showUserProfileOverlay;
         }
     }
 };
