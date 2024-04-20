@@ -19,15 +19,14 @@
             <span style="margin-bottom: 10px;">Observações para serviços futuros</span>
             <span style="margin-bottom: 47px; font-weight: lighter;">(Opcional)</span>
 
-            <textarea type="text" v-model="textAreaValue" class="text-box">Enter text here</textarea>
+            <textarea type="text" v-model="textAreaValue" class="text-box"></textarea>
 
-            <div>
+            <div class="container-buttons">
                 <button class="button-voltar">Voltar</button>
                 <button class="button-concluir">Concluir Serviço</button>
             </div>
         </div>
     </div>
-    
 
 </template>
 
@@ -63,23 +62,49 @@ export default {
         }
 
         // Vai buscar o funcionário
-        const response1 = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
-        if (!response1.ok) throw new Error('Failed to fetch');
-        this.worker = (await response1.json())[0];
+        fetch('http://localhost:3000/workers?nome_utilizador=' + this.username)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch');
+            }
+        })
+        .then((data) => {
+            this.worker = data[0];
 
-        // Verifica se o funcionário tem aquele serviço atribuído
-        if (!this.worker.servicos_atribuidos.includes(element)) {
-            this.$router.push({ name: 'home' });
-        }
+            // Verifica se o funcionário tem aquele serviço atribuído
+            if (!this.worker.servicos_atribuidos.includes(this.id)) {
+                this.$router.push({ name: 'home' });
+            }
 
-        // Vai buscar a informação do serviço
-        const response2 = await fetch('http://localhost:3000/services?id=' + this.id);
-        if (!response2.ok) throw new Error('Failed to fetch');
-        this.servico = (await response2.json())[0];
-        
+            // Vai buscar a informação do serviço
+            fetch('http://localhost:3000/services/' + this.id)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch');
+                }
+            })
+            .then((data) => {
+                this.servico = data;
+                console.log(this.textAreaValue);
+                this.textAreaValue = this.servico.observacoes;
+            })
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
     },
     methods: {
-        
+        updateObservation() {
+            console.log("Observção do Mecânico: " + this.textAreaValue)
+
+            // Atualizar a observação do serviço na base de dados
+        },
+        changeToServicePage() {
+            // Fazer depois de saber o link para a página de um serviço
+        }
     }
 };
 </script>
@@ -125,6 +150,37 @@ export default {
     font-size: 35px;
     font-weight: lighter;
     resize: none;
+}
+
+.button-voltar{
+    width: 180px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 25px;
+    margin-left: 65px;
+}
+
+.button-concluir{
+    width: 272px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(255, 127, 72, 0.8);
+    color: white;
+    font-size: 25px;
+    margin-right: 65px;
+}
+
+.container-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 110px;
 }
 
 </style>

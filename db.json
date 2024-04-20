@@ -278,7 +278,8 @@
         "hora": 14,
         "minutos": 14
       },
-      "descricao": "Colocar XPTO 225R15"
+      "descricao": "Colocar XPTO 225R15",
+      "observacoes": "Penis"
     },
     {
       "id": "s32",
@@ -293,7 +294,8 @@
         "hora": 14,
         "minutos": 15
       },
-      "descricao": "Atenção ao banco do condutor."
+      "descricao": "Atenção ao banco do condutor.",
+      "observacoes": ""
     },
     {
       "id": "s33",
@@ -308,7 +310,8 @@
         "hora": 99,
         "minutos": 99
       },
-      "descricao": "Ver jantes."
+      "descricao": "Ver jantes.",
+      "observacoes": ""
     },
     {
       "id": "s34",
@@ -323,7 +326,8 @@
         "hora": 99,
         "minutos": 99
       },
-      "descricao": "Falta o filtro."
+      "descricao": "Falta o filtro.",
+      "observacoes": ""
     },
     {
       "id": "s12",
@@ -338,7 +342,8 @@
         "hora": 99,
         "minutos": 99
       },
-      "descricao": "Colocar XPTO 225R15"
+      "descricao": "Colocar XPTO 225R15",
+      "observacoes": ""
     },
     {
       "id": "s24",
@@ -353,7 +358,8 @@
         "hora": 14,
         "minutos": 15
       },
-      "descricao": "shampoo XPTO"
+      "descricao": "shampoo XPTO",
+      "observacoes": ""
     }
   ]
 }
