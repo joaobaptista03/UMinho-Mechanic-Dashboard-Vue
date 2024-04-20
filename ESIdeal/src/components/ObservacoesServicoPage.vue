@@ -98,6 +98,7 @@ export default {
 
             // Constroí o payload com o campo que vai ser atualizado
             const payload1 = {
+                estado: "realizado",
                 observacoes: this.observacao
             };
 

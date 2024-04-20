@@ -226,8 +226,6 @@
       "solucoes": "Pesquisar na internet, assistir a vídeos e tutoriais, pedir ajuda aos colegas mais novos",
       "citacao": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil.",
       "servicos_atribuidos": [
-        "s32",
-        "s33",
         "s34"
       ]
     }
@@ -289,20 +287,20 @@
       "agendamento": "programado",
       "data": {
         "dia": "31",
-        "mes": "12",
-        "ano": "2025",
+        "mes": "01",
+        "ano": "2026",
         "hora": 14,
         "minutos": 15
       },
       "descricao": "Atenção ao banco do condutor.",
-      "observacoes": "Está tudo em ordem.",
+      "observacoes": "Está tudo em ordem;\nDizer Olá.",
       "adiamento": "Nada, apetece-me tirar férias."
     },
     {
       "id": "s33",
       "vehicleId": "AH-32-44",
       "service-definitionId": "le",
-      "estado": "nafila",
+      "estado": "realizado",
       "agendamento": "filaDeEspera",
       "data": {
         "dia": 99,
