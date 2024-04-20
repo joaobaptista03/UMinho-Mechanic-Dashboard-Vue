@@ -294,7 +294,7 @@
         "minutos": 15
       },
       "descricao": "Atenção ao banco do condutor.",
-      "observacoes": ""
+      "observacoes": "Está tudo em ordem."
     },
     {
       "id": "s33",
@@ -310,7 +310,7 @@
         "minutos": 99
       },
       "descricao": "Ver jantes.",
-      "observacoes": ""
+      "observacoes": "Ok;"
     },
     {
       "id": "s34",
@@ -326,7 +326,7 @@
         "minutos": 99
       },
       "descricao": "Falta o filtro.",
-      "observacoes": ""
+      "observacoes": "Mega Ok;"
     },
     {
       "id": "s12",

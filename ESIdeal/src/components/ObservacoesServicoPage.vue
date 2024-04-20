@@ -146,7 +146,7 @@ export default {
             .catch((error) => {
                 console.log("Error " + error)
             }).finally(() => {
-                // Redireciona para a próxima página
+                this.$router.push({ name: 'servicoConcluido', params: { id: this.id } })
             })
         },
         changeToServicePage() {
@@ -162,7 +162,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #EDEDED;
-    border-radius: 30px;
+    border-radius: 50px;
     margin-bottom: 2%;
     width: 80%;
     padding-top: 47px;
@@ -208,6 +208,7 @@ export default {
     color: white;
     font-size: 25px;
     margin-left: 65px;
+    transition: all 0.5s ease;
 }
 
 .button-voltar:hover{
@@ -225,6 +226,7 @@ export default {
     color: white;
     font-size: 25px;
     margin-right: 65px;
+    transition: all 0.05s ease;
 }
 
 .button-concluir:hover{
