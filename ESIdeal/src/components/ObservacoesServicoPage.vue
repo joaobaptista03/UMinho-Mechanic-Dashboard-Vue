@@ -19,11 +19,11 @@
             <span style="margin-bottom: 10px;">Observações para serviços futuros</span>
             <span style="margin-bottom: 47px; font-weight: lighter;">(Opcional)</span>
 
-            <textarea type="text" v-model="textAreaValue" class="text-box"></textarea>
+            <textarea type="text" v-model="observacao" class="text-box"></textarea>
 
             <div class="container-buttons">
-                <button class="button-voltar">Voltar</button>
-                <button class="button-concluir">Concluir Serviço</button>
+                <button class="button-voltar" @click="changeToServicePage">Voltar</button>
+                <button class="button-concluir" @click="updateObservation">Concluir Serviço</button>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@ import { useUserStore } from '../stores';
 export default {
     data() {
         return {
-            textAreaValue: ''
+            textAreaValue: 'Merda'
         };
     },
     components: {
@@ -47,7 +47,9 @@ export default {
     name: 'ObservacoesServicoPage',
     data() {
         return {
+            worker: null,
             servico: null,
+            observacao: '',
             showUserProfileOverlay: false
         }
     },
@@ -89,8 +91,10 @@ export default {
             })
             .then((data) => {
                 this.servico = data;
-                console.log(this.textAreaValue);
-                this.textAreaValue = this.servico.observacoes;
+                console.log("Fetched observacoes:", this.servico.observacoes);
+                console.log("Before setting textAreaValue:", this.observacao);
+                this.observacao = this.servico.observacoes;
+                console.log("After setting textAreaValue:", this.observacao);
             })
             .catch(error => console.log(error));
         })
@@ -98,9 +102,52 @@ export default {
     },
     methods: {
         updateObservation() {
-            console.log("Observção do Mecânico: " + this.textAreaValue)
+            console.log("Observação do Mecânico: " + this.observacao)
+
+            // Constroí o payload com o campo que vai ser atualizado
+            const payload1 = {
+                observacoes: this.observacao
+            };
 
             // Atualizar a observação do serviço na base de dados
+            fetch('http://localhost:3000/services/' + this.id, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload1)
+            }).then(() => {
+                console.log("Observação atualizada na base de dados com sucesso.")
+            })
+            .catch((error) => {
+                console.log("Error " + error)
+            }).finally(() => {
+                // Redireciona para a próxima página
+            })
+
+            // Constroí o payload com o campo que vai ser atualizado
+            let new_servicos = this.worker.servicos_atribuidos.filter(id => id !== this.id);
+
+            const payload2 = {
+                servicos_atribuidos: new_servicos
+            };
+
+
+            // Remover o serviço das lista de serviços por concluir
+            fetch('http://localhost:3000/workers/' + this.worker.id, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload2)
+            }).then(() => {
+                console.log("Serviços atribuídos ao funcionário atualizados na base de dados com sucesso.")
+            })
+            .catch((error) => {
+                console.log("Error " + error)
+            }).finally(() => {
+                // Redireciona para a próxima página
+            })
         },
         changeToServicePage() {
             // Fazer depois de saber o link para a página de um serviço
@@ -163,6 +210,12 @@ export default {
     margin-left: 65px;
 }
 
+.button-voltar:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
 .button-concluir{
     width: 272px;
     height: 80px;
@@ -172,6 +225,12 @@ export default {
     color: white;
     font-size: 25px;
     margin-right: 65px;
+}
+
+.button-concluir:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .container-buttons{
