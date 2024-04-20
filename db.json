@@ -278,7 +278,8 @@
         "minutos": 14
       },
       "descricao": "Colocar XPTO 225R15",
-      "observacoes": "Troca de Pneus;\nLavar Escovas;\nMeter portas novas;\nAmortecedores;"
+      "observacoes": "Troca de Pneus;\nLavar Escovas;\nMeter portas novas;\nAmortecedores;",
+      "adiamento": ""
     },
     {
       "id": "s32",
@@ -294,7 +295,8 @@
         "minutos": 15
       },
       "descricao": "Atenção ao banco do condutor.",
-      "observacoes": "Está tudo em ordem."
+      "observacoes": "Está tudo em ordem.",
+      "adiamento": "Nada, apetece-me."
     },
     {
       "id": "s33",
@@ -310,7 +312,8 @@
         "minutos": 99
       },
       "descricao": "Ver jantes.",
-      "observacoes": "Ok;"
+      "observacoes": "Ok;",
+      "adiamento": ""
     },
     {
       "id": "s34",
@@ -326,7 +329,8 @@
         "minutos": 99
       },
       "descricao": "Falta o filtro.",
-      "observacoes": "Mega Ok;"
+      "observacoes": "Mega Ok;",
+      "adiamento": ""
     },
     {
       "id": "s12",
@@ -342,7 +346,8 @@
         "minutos": 99
       },
       "descricao": "Colocar XPTO 225R15",
-      "observacoes": ""
+      "observacoes": "",
+      "adiamento": ""
     },
     {
       "id": "s24",
@@ -358,7 +363,8 @@
         "minutos": 15
       },
       "descricao": "shampoo XPTO",
-      "observacoes": ""
+      "observacoes": "",
+      "adiamento": ""
     }
   ]
 }

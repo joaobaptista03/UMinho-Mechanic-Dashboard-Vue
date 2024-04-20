@@ -15,15 +15,16 @@
         <div class="titulo">
             <div class="titulo"><p style="font-size: 45px;">Serviço:</p><p style="color:#FF9D73; font-size: 45px; margin-left: 8px;">{{ this.id }}</p></div>
         </div>
-        <div class="box-observacoes">
-            <span style="margin-bottom: 10px;">Observações para serviços futuros</span>
-            <span style="margin-bottom: 47px; font-weight: lighter;">(Opcional)</span>
+        <div class="box-adiamento">
+            <span style="margin-bottom: 10px; font-size: 50px;">Motivos para adiamento</span>
+            <textarea type="text" v-model="motivo" class="text-box"></textarea>
 
-            <textarea type="text" v-model="observacao" class="text-box"></textarea>
+            <span style="margin-bottom: 10px;font-size: 40px; margin-top: 52px;">Nova data Prevista</span>
+            <input type="date" v-model="novadata" class="data-box"></input>
 
             <div class="container-buttons">
                 <button class="button-voltar" @click="changeToServicePage">Voltar</button>
-                <button class="button-concluir" @click="updateObservation">Concluir Serviço</button>
+                <button class="button-concluir" @click="updateObservation">Adiar Serviço</button>
             </div>
         </div>
     </div>
@@ -39,12 +40,13 @@ export default {
         UserProfileOverlay
     },
     props: ['id'],
-    name: 'ObservacoesServicoPage',
+    name: 'AdiarServico',
     data() {
         return {
             worker: null,
             servico: null,
-            observacao: '',
+            motivo: '',
+            novadata: '',
             showUserProfileOverlay: false
         }
     },
@@ -86,7 +88,18 @@ export default {
             })
             .then((data) => {
                 this.servico = data;
-                this.observacao = this.servico.observacoes;
+                this.motivo = this.servico.adiamento;
+
+                // Atualizar a variável novadata com a data em que era suposto terminar o serviço
+                if (this.servico.data.dia < 10 && this.servico.data.mes < 10) {
+                    this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                } else if (this.servico.data.dia < 10) {
+                    this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                } else  if (this.servico.data.mes < 10) {
+                    this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-' + this.servico.data.dia;
+                } else {
+                    this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-' + this.servico.data.dia;
+                }
             })
             .catch(error => console.log(error));
         })
@@ -116,30 +129,6 @@ export default {
             }).finally(() => {
                 // Redireciona para a próxima página
             })
-
-            // Constroí o payload com o campo que vai ser atualizado
-            let new_servicos = this.worker.servicos_atribuidos.filter(id => id !== this.id);
-
-            const payload2 = {
-                servicos_atribuidos: new_servicos
-            };
-
-
-            // Remover o serviço das lista de serviços por concluir
-            fetch('http://localhost:3000/workers/' + this.worker.id, {
-                method: 'PATCH',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload2)
-            }).then(() => {
-                console.log("Serviços atribuídos ao funcionário atualizados na base de dados com sucesso.")
-            })
-            .catch((error) => {
-                console.log("Error " + error)
-            }).finally(() => {
-                this.$router.push({ name: 'servicoConcluido', params: { id: this.id } })
-            })
         },
         changeToServicePage() {
             // Fazer depois de saber o link para a página de um serviço
@@ -150,7 +139,7 @@ export default {
 
 <style scoped>
 
-.box-observacoes{
+.box-adiamento{
     display: flex;
     flex-direction: column;
     background-color: #EDEDED;
@@ -182,13 +171,27 @@ export default {
 .text-box{
     border-radius: 50px;
     width: 1166px;
-    height: 339px;
+    height: 147px;
     border: 2px solid black;
     text-align: center;
     line-height: 40px;
     font-size: 35px;
     font-weight: lighter;
     resize: none;
+    margin-top: 40px;
+}
+
+.data-box{
+    border-radius: 50px;
+    width: 564px;
+    height: 89px;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 40px;
+    font-size: 35px;
+    font-weight: lighter;
+    resize: none;
+    margin-top: 56px;
 }
 
 .button-voltar{
@@ -233,7 +236,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: 110px;
+    margin-top: 102px;
 }
 
 </style>
