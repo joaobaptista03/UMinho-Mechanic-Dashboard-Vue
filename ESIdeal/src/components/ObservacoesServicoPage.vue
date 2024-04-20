@@ -113,8 +113,6 @@ export default {
             })
             .catch((error) => {
                 console.log("Error " + error)
-            }).finally(() => {
-                // Redireciona para a próxima página
             })
 
             // Constroí o payload com o campo que vai ser atualizado

@@ -21,10 +21,12 @@
 
             <span style="margin-bottom: 10px;font-size: 40px; margin-top: 52px;">Nova data Prevista</span>
             <input type="date" v-model="novadata" class="data-box"></input>
+            <span v-if="dataInvalida" style="color: #C73030; font-size: 22px; margin-top: 9px;">A data selecionada não é válida.</span>
+            <span v-if="dataInvalida" style="color: #C73030; font-size: 22px;">Nota: Esta deve ser posterior a {{ this.dataAntigaString }}</span>
 
             <div class="container-buttons">
                 <button class="button-voltar" @click="changeToServicePage">Voltar</button>
-                <button class="button-concluir" @click="updateObservation">Adiar Serviço</button>
+                <button class="button-concluir" @click="delayService">Adiar Serviço</button>
             </div>
         </div>
     </div>
@@ -47,6 +49,9 @@ export default {
             servico: null,
             motivo: '',
             novadata: '',
+            dataAntiga: '',
+            dataAntigaString: '',
+            dataInvalida: false,
             showUserProfileOverlay: false
         }
     },
@@ -93,12 +98,20 @@ export default {
                 // Atualizar a variável novadata com a data em que era suposto terminar o serviço
                 if (this.servico.data.dia < 10 && this.servico.data.mes < 10) {
                     this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                    this.dataAntigaString = '0' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
+                    this.dataAntiga = this.novadata;
                 } else if (this.servico.data.dia < 10) {
                     this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                    this.dataAntigaString = '0' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
+                    this.dataAntiga = this.novadata;
                 } else  if (this.servico.data.mes < 10) {
                     this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-' + this.servico.data.dia;
+                    this.dataAntigaString = '' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
+                    this.dataAntiga = this.novadata;
                 } else {
                     this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-' + this.servico.data.dia;
+                    this.dataAntigaString = '' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
+                    this.dataAntiga = this.novadata;
                 }
             })
             .catch(error => console.log(error));
@@ -106,12 +119,31 @@ export default {
         .catch(error => console.log(error));
     },
     methods: {
-        updateObservation() {
-            console.log("Observação do Mecânico: " + this.observacao)
+        delayService() {
+            console.log("Motivo do Mecânico: " + this.motivo);
+            console.log("Nova data: " + this.novadata);
+
+            const [year, month, day] = this.novadata.split('-');
+            // Verifica se a data é válida
+            const date1 = new Date(this.dataAntiga);
+            const date2 = new Date(this.novadata);
+            if (date1>=date2) {
+                console.log("Data inválida. Esta deve ser posterior à data estabelecida anteriormente.");
+                this.dataInvalida = true;
+                return;
+            }
+            this.dataInvalida = false;
 
             // Constroí o payload com o campo que vai ser atualizado
-            const payload1 = {
-                observacoes: this.observacao
+            const payload = {
+                adiamento: this.motivo,
+                data: {
+                    dia: day,
+                    mes: month,
+                    ano: year,
+                    hora: this.servico.data.hora,
+                    minutos: this.servico.data.minutos
+                }
             };
 
             // Atualizar a observação do serviço na base de dados
@@ -120,14 +152,14 @@ export default {
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload1)
+                body: JSON.stringify(payload)
             }).then(() => {
-                console.log("Observação atualizada na base de dados com sucesso.")
+                console.log("Servico atualizado na base de dados com sucesso.")
             })
             .catch((error) => {
                 console.log("Error " + error)
             }).finally(() => {
-                // Redireciona para a próxima página
+                this.$router.push({ name: 'servicoAdiado', params: { id: this.id } })
             })
         },
         changeToServicePage() {

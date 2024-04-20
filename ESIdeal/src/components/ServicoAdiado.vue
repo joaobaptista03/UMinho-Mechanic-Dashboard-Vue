@@ -16,7 +16,7 @@
             <div class="titulo"><p style="font-size: 45px;">Serviço:</p><p style="color:#FF9D73; font-size: 45px; margin-left: 8px;">{{ this.id }}</p></div>
         </div>
         <div class="box">
-            <span style="margin-bottom: 10px;">Serviço adiado com sucesso</span>
+            <span style="margin-bottom: 10px; font-size: 40px;">Serviço adiado com sucesso</span>
 
             <button class="button-voltar" @click="changeToServicePage">Voltar a Serviços</button>
         </div>
