@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p>E.S.Ideal</p>
+        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal"</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
@@ -114,8 +114,11 @@ export default {
 
 .title{
     display: flex;
-    width:100%;
     justify-content: center;
+}
+
+.title a {
+    cursor: pointer; 
 }
 
 .title h2 {
