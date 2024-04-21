@@ -41,6 +41,13 @@
                 <p><b>Descrição: </b>{{servico.descricao}}</p>
                 <p><b>Observações: </b>{{servico.observacoes}}</p>
             </div>
+            <div class="container-buttons">
+                <button class="button-voltar" @click="this.$router.push({ name: 'servicosAtribuidos' })">Voltar</button>
+                <div class="button-divider">
+                    <button class="button-adiar" @click="adiarServico">Adiar Serviço</button>
+                    <button class="button-concluir" @click="concluirServico">Concluir Serviço</button>
+                </div>
+            </div>    
         </div>
     </div>
 
@@ -157,7 +164,6 @@ export default {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 1%;
     width: 100%;
 }
 
@@ -186,6 +192,78 @@ export default {
     flex-direction: column;
     align-items: center;
     width: 100%;
+}
+
+
+.button-voltar{
+    width: 140px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 20px;
+    margin-left: 65px;
+    transition: all 0.5s ease;
+}
+
+.button-voltar:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.button-adiar{
+    width: 180px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 20px;
+    margin-right: 5%;
+    transition: all 0.5s ease;
+}
+
+.button-adiar:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.button-concluir{
+    width: 180px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(255, 127, 72, 0.8);
+    color: white;
+    font-size: 20px;
+    margin-right: 65px;
+    transition: all 0.05s ease;
+    padding:0.5%;
+}
+
+.button-concluir:hover{
+  transform: scale(0.98); 
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.container-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 2%;
+    padding-top: 3%;
+}
+
+.button-divider{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .datahora{
