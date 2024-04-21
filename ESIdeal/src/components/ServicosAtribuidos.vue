@@ -20,7 +20,8 @@
             </div>
         </div>
 
-        <div class ="servico" v-for="servico in servicosAtribuidos[page - 1]">
+        <div class="servico" v-for="servico in servicosAtribuidos[page - 1]">
+            <a @click="this.$router.push({ name: 'servico'}); handleServicoClick(servico)">
                 <div class="parte1">
                     <p><b>ID: </b>{{servico.id}}</p>
                     <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
@@ -47,7 +48,9 @@
                     </div>
                     <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
                 </div>
+            </a>
         </div>
+
 
         <div class="pagination">
             <button class="previous" v-if="this.page != 1" @click="changePage(-1)" :disabled="this.page == 1">
@@ -65,6 +68,7 @@
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
 import { useUserStore } from '../stores';
+import { useServicoStore } from '../stores';
 
 export default {
     components: {
@@ -84,6 +88,8 @@ export default {
         const userStore = useUserStore();
         this.username = userStore.getUser();
         if (!this.username) this.$router.push({ name: 'home' });
+
+        console.log(this.username)
         
         const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
         if (!response.ok) throw new Error('Failed to fetch');
@@ -173,6 +179,11 @@ export default {
         },
         toggleOverlay() {
             this.showUserProfileOverlay = !this.showUserProfileOverlay;
+        },
+        handleServicoClick(servico) {
+            console.log(servico);
+            const servicoStore = useServicoStore(); 
+            servicoStore.setServico(servico);
         }
     }
 };
@@ -188,7 +199,14 @@ export default {
     font-family: 'open sans', sans-serif;
 }
 
-.servico{
+a{
+    display:flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.servico {
     display: flex;
     background-color: #EDEDED;
     border-radius: 30px;
@@ -224,8 +242,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: end;
-    align-items: end;
-    margin-bottom: 1%;
+    align-items: end;;
     width: 45%;
 }
 
@@ -303,7 +320,7 @@ export default {
 }
 
 .descricao{
-    margin: 2% 0px;
+    margin-top: 5%;
 }
 
 .pagination {
