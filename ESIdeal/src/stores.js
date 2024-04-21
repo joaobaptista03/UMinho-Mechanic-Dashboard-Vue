@@ -16,3 +16,20 @@ export const useUserStore = defineStore('user', {
         }
     }
 });
+
+export const useServicoStore = defineStore('servico', {
+    state: () => ({
+        servico: null
+    }),
+    actions: {
+        setServico(servico) {
+            this.servico = servico;
+        },
+        clearServico() {
+            this.servico = null;
+        },
+        getServico() {
+            return this.servico;
+        }
+    }
+});
