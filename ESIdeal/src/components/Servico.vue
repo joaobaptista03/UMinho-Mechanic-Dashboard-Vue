@@ -23,7 +23,7 @@
             </div>
             <div class="parte2">
                 <p><b>Contacto: </b>{{this.client.telefone}}</p>
-                <p><b>Serviço: </b>{{}}</p>
+                <p><b>Serviço: </b>{{this.servico.definition.descr}}</p>
             </div>
             <div class="parte3">
                 <p><b>Estado: </b>{{servico.estado}}</p>
