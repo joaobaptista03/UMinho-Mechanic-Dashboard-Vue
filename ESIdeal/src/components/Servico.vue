@@ -29,7 +29,9 @@
                 <p><b>Estado: </b>{{servico.estado}}</p>
                 <p><b>Agendamento: </b>{{servico.agendamento}}</p>
                 <div v-if="servico.data.ano != 9999" >
-                        <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos}}</p>                </div>
+                        <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos}}</p></div>
+                        <p><b>Tempo estimado: </b>{{servico.definition.duracao}} minutos</p>
+                        <p><b>Data estimada de fim: </b>{{ calculateEstimatedEndDate(servico.data, servico.definition.duracao) }}</p>
                 <p><b>Descrição: </b>{{servico.descricao}}</p>
                 <p><b>Observações: </b>{{servico.observacoes}}</p>
             </div>
@@ -94,6 +96,14 @@ export default {
         toggleOverlay() {
             this.showUserProfileOverlay = !this.showUserProfileOverlay;
         },
+        calculateEstimatedEndDate(startDate, duration) {
+        const start = new Date(startDate.ano, startDate.mes - 1, startDate.dia, startDate.hora, startDate.minutos);
+
+        const end = new Date(start.getTime() + duration * 60000); 
+
+        const formattedEndDate = `${end.getDate()}/${end.getMonth() + 1}/${end.getFullYear()} ${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`;
+        return formattedEndDate;
+    },
         nomeMes(mes) {
             const data = new Date(2024, mes - 1); 
             let mesExtenso = data.toLocaleString('pt-PT', { month: 'long' });
