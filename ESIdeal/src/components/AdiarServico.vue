@@ -35,16 +35,16 @@
 
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
-import { useUserStore } from '../stores';
+import { useUserStore, useServicoStore } from '../stores';
 
 export default {
     components: {
         UserProfileOverlay
     },
-    props: ['id'],
     name: 'AdiarServico',
     data() {
         return {
+            id: null,
             worker: null,
             servico: null,
             motivo: '',
@@ -77,44 +77,35 @@ export default {
         .then((data) => {
             this.worker = data[0];
 
+            const servicoStore = useServicoStore();
+            this.servico = servicoStore.getServico();
+            this.id = this.servico.id;
+
             // Verifica se o funcionário tem aquele serviço atribuído
             if (!this.worker.servicos_atribuidos.includes(this.id)) {
                 this.$router.push({ name: 'home' });
             }
 
-            // Vai buscar a informação do serviço
-            fetch('http://localhost:3000/services/' + this.id)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Failed to fetch');
-                }
-            })
-            .then((data) => {
-                this.servico = data;
-                this.motivo = this.servico.adiamento;
+            this.motivo = this.servico.adiamento;
 
-                // Atualizar a variável novadata com a data em que era suposto terminar o serviço
-                if (this.servico.data.dia < 10 && this.servico.data.mes < 10) {
-                    this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-0' + this.servico.data.dia;
-                    this.dataAntigaString = '0' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
-                    this.dataAntiga = this.novadata;
-                } else if (this.servico.data.dia < 10) {
-                    this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-0' + this.servico.data.dia;
-                    this.dataAntigaString = '0' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
-                    this.dataAntiga = this.novadata;
-                } else  if (this.servico.data.mes < 10) {
-                    this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-' + this.servico.data.dia;
-                    this.dataAntigaString = '' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
-                    this.dataAntiga = this.novadata;
-                } else {
-                    this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-' + this.servico.data.dia;
-                    this.dataAntigaString = '' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
-                    this.dataAntiga = this.novadata;
-                }
-            })
-            .catch(error => console.log(error));
+            // Atualizar a variável novadata com a data em que era suposto terminar o serviço
+            if (this.servico.data.dia < 10 && this.servico.data.mes < 10) {
+                this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                this.dataAntigaString = '0' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
+                this.dataAntiga = this.novadata;
+            } else if (this.servico.data.dia < 10) {
+                this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-0' + this.servico.data.dia;
+                this.dataAntigaString = '0' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
+                this.dataAntiga = this.novadata;
+            } else  if (this.servico.data.mes < 10) {
+                this.novadata = '' + this.servico.data.ano + '-0' + this.servico.data.mes + '-' + this.servico.data.dia;
+                this.dataAntigaString = '' + this.servico.data.dia + '/0' + this.servico.data.mes + '/' + this.servico.data.ano;
+                this.dataAntiga = this.novadata;
+            } else {
+                this.novadata = '' + this.servico.data.ano + '-' + this.servico.data.mes + '-' + this.servico.data.dia;
+                this.dataAntigaString = '' + this.servico.data.dia + '/' + this.servico.data.mes + '/' + this.servico.data.ano;
+                this.dataAntiga = this.novadata;
+            }
         })
         .catch(error => console.log(error));
     },
@@ -163,7 +154,7 @@ export default {
             })
         },
         changeToServicePage() {
-            // Fazer depois de saber o link para a página de um serviço
+            this.$router.push({ name: 'servico'})
         }
     }
 };

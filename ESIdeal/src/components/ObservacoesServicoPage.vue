@@ -32,16 +32,16 @@
 
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
-import { useUserStore } from '../stores';
+import { useUserStore, useServicoStore } from '../stores';
 
 export default {
     components: {
         UserProfileOverlay
     },
-    props: ['id'],
     name: 'ObservacoesServicoPage',
     data() {
         return {
+            id: null,
             worker: null,
             servico: null,
             observacao: '',
@@ -70,25 +70,15 @@ export default {
         .then((data) => {
             this.worker = data[0];
 
+            const servicoStore = useServicoStore();
+            this.servico = servicoStore.getServico();
+            this.id = this.servico.id;
+            this.observacao = this.servico.observacoes;
+
             // Verifica se o funcionário tem aquele serviço atribuído
             if (!this.worker.servicos_atribuidos.includes(this.id)) {
                 this.$router.push({ name: 'home' });
             }
-
-            // Vai buscar a informação do serviço
-            fetch('http://localhost:3000/services/' + this.id)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Failed to fetch');
-                }
-            })
-            .then((data) => {
-                this.servico = data;
-                this.observacao = this.servico.observacoes;
-            })
-            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
     },
@@ -137,11 +127,11 @@ export default {
             .catch((error) => {
                 console.log("Error " + error)
             }).finally(() => {
-                this.$router.push({ name: 'servicoConcluido', params: { id: this.id } })
+                this.$router.push({ name: 'servicoConcluido'})
             })
         },
         changeToServicePage() {
-            // Fazer depois de saber o link para a página de um serviço
+            this.$router.push({ name: 'servico'})
         }
     }
 };

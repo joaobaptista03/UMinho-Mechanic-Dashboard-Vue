@@ -26,17 +26,16 @@
 
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
-import { useUserStore } from '../stores';
+import { useUserStore, useServicoStore } from '../stores';
 
 export default {
     components: {
         UserProfileOverlay
     },
-    props: ['id'],
     name: 'ServicoAdiado',
     data() {
         return {
-            worker: null,
+            id: null,
             servico: null,
             showUserProfileOverlay: false
         }
@@ -50,10 +49,14 @@ export default {
             console.log("User não logado! Redirecionando para a página de login...")
             this.$router.push({ name: 'home' });
         }
+
+        const servicoStore = useServicoStore();
+        this.servico = servicoStore.getServico();
+        this.id = this.servico.id;
     },
     methods: {
         changeToServicePage() {
-            this.$router.push({ name: 'servicosAtribuidos'})
+            this.$router.push({ name: 'servico'})
         }
     }
 };

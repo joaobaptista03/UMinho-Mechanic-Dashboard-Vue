@@ -109,6 +109,12 @@ export default {
             const data = new Date(2024, mes - 1); 
             let mesExtenso = data.toLocaleString('pt-PT', { month: 'long' });
             return mesExtenso.charAt(0).toUpperCase() + mesExtenso.slice(1, 3).toLowerCase();
+        },
+        adiarServico() {
+            this.$router.push({ name: 'adiarServico' })
+        },
+        concluirServico() {
+            this.$router.push({ name: 'observacoes' })
         }
     }
 };

@@ -21,7 +21,7 @@
         </div>
 
         <div class="servico" v-for="servico in servicosAtribuidos[page - 1]">
-            <a @click="this.$router.push({ name: 'servico'}); handleServicoClick(servico)">
+            <a @click="handleServicoClick(servico)">
                 <div class="parte1">
                     <p><b>ID: </b>{{servico.id}}</p>
                     <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
@@ -182,8 +182,9 @@ export default {
         },
         handleServicoClick(servico) {
             console.log(servico);
-            const servicoStore = useServicoStore(); 
+            const servicoStore = useServicoStore();
             servicoStore.setServico(servico);
+            this.$router.push({ name: 'servico'})
         }
     }
 };

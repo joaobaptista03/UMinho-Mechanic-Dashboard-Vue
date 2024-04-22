@@ -26,16 +26,16 @@
 
 <script>
 import UserProfileOverlay from './UserProfileOverlay.vue';
-import { useUserStore } from '../stores';
+import { useUserStore, useServicoStore } from '../stores';
 
 export default {
     components: {
         UserProfileOverlay
     },
-    props: ['id'],
     name: 'ServicoConcluido',
     data() {
         return {
+            id: null,
             worker: null,
             servico: null,
             showUserProfileOverlay: false
@@ -50,6 +50,24 @@ export default {
             console.log("User não logado! Redirecionando para a página de login...")
             this.$router.push({ name: 'home' });
         }
+
+        // Vai buscar o funcionário
+        fetch('http://localhost:3000/workers?nome_utilizador=' + this.username)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch');
+            }
+        })
+        .then((data) => {
+            this.worker = data[0];
+
+            const servicoStore = useServicoStore();
+            this.servico = servicoStore.getServico();
+            this.id = this.servico.id;
+        })
+        .catch(error => console.log(error));
     },
     methods: {
         changeToServicePage() {

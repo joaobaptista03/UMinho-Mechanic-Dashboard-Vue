@@ -32,10 +32,10 @@ const router = createRouter({
             component: Servico,
             props: true
        },
-        { path: '/servicosAtribuidos/observacoes/:id', name: "observacoes", component: ObservacoesServicoPage, props: true},
-        { path: '/servicosAtribuidos/servicoConcluido/:id', name: "servicoConcluido", component: ServicoConcluido, props: true},
-        { path: '/servicosAtribuidos/adiarServico/:id', name: "adiarServico", component: AdiarServico, props: true},
-        { path: '/servicosAtribuidos/servicoAdiado/:id', name: "servicoAdiado", component: ServicoAdiado, props: true}
+        { path: '/servicosAtribuidos/observacoes', name: "observacoes", component: ObservacoesServicoPage},
+        { path: '/servicosAtribuidos/servicoConcluido', name: "servicoConcluido", component: ServicoConcluido},
+        { path: '/servicosAtribuidos/adiarServico', name: "adiarServico", component: AdiarServico},
+        { path: '/servicosAtribuidos/servicoAdiado', name: "servicoAdiado", component: ServicoAdiado}
     ]
 });
 
