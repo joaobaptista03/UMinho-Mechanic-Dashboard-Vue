@@ -28,16 +28,8 @@
             <div class="parte3">
                 <p><b>Estado: </b>{{servico.estado}}</p>
                 <p><b>Agendamento: </b>{{servico.agendamento}}</p>
-                <div class="datahora" v-if="servico.data.ano != 9999" >
-                    <div class="data">
-                        <p class="dia"><b>{{servico.data.dia}}</b></p>
-                        <p>{{nomeMes(servico.data.mes)}}</p>
-                    </div>
-                    <div class="hora">
-                        <img src="../assets/clock.png" alt="relogio">
-                        <p> {{servico.data.hora}}:{{servico.data.minutos}} </p>
-                    </div>
-                </div>
+                <div v-if="servico.data.ano != 9999" >
+                        <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos}}</p>                </div>
                 <p><b>Descrição: </b>{{servico.descricao}}</p>
                 <p><b>Observações: </b>{{servico.observacoes}}</p>
             </div>
@@ -78,7 +70,6 @@ export default {
         this.username = userStore.getUser();
         if (!this.username) this.$router.push({ name: 'home' });
 
-        console.log(this.username)
 
         const servicoStore = useServicoStore();
         this.servico = servicoStore.getServico();
@@ -91,12 +82,10 @@ export default {
         const response2 = await fetch('http://localhost:3000/vehicles?id=' + this.servico.vehicleId);
         if (!response2.ok) throw new Error('Failed to fetch');
         this.vehicle = (await response2.json())[0];
-        console.log(this.vehicle);
 
         const response3 = await fetch('http://localhost:3000/clients?id=' + this.vehicle.clientId);
         if (!response3.ok) throw new Error('Failed to fetch');
         this.client = (await response3.json())[0];
-        console.log(this.client);
 
     },
     watch: {
@@ -271,13 +260,6 @@ export default {
     align-items: center;
 }
 
-.datahora{
-    display: flex;
-    width: 30%;
-    justify-content: space-between;
-    align-items: start;
-    height: 60%;
-}
 
 .data{
     display: flex;
