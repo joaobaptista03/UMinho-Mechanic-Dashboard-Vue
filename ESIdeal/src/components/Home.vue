@@ -1,16 +1,16 @@
 <template>
 
-    <nav class="navbar">
-        <p>E.S.Ideal</p>   
-        <div class="loginbutton">
-            <LoginButton @login-clicked="showLoginModal = true"></LoginButton>
-            <LoginModal
-                :show="showLoginModal"
-                @close="showLoginModal = false"
-                @login-success="handleLoginSuccess"
-            ></LoginModal>
-        </div>
-    </nav>
+    <header>
+            <p>E.S.Ideal</p>   
+            <div class="loginbutton">
+                <LoginButton @login-clicked="showLoginModal = true"></LoginButton>
+                <LoginModal
+                    :show="showLoginModal"
+                    @close="showLoginModal = false"
+                    @login-success="handleLoginSuccess"
+                ></LoginModal>
+            </div>
+    </header>
 
     <main>
         <div class="homeimage">
@@ -59,19 +59,18 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inspiration&display=swap');
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+header {
     background-color: #ffffff;
 }
 
-.navbar p {
+
+header p {
     font-size: 40px;
     color: #FF9D73;
     font-family: 'Inspiration', cursive;
-    padding-left: 5%;
     margin: 15px;
+    padding-left: 2%;
 }
 
 .loginbutton {
