@@ -33,7 +33,7 @@ export default {
 .overlay {
     position: absolute; /*Para que possamos preencher o viewport a 100% */
     right: 0;
-    width: 100%;
+    width: 98%;
     height: 100%;
     display: flex;
     justify-content: end;
