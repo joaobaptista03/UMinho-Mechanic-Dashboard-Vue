@@ -121,7 +121,7 @@ export default {
 }
 
 .button-voltar:hover{
-  transform: scale(0.98); /* Scale up when hovered */
+  transform: scale(0.98); 
   box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }

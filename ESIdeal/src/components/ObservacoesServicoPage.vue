@@ -93,7 +93,6 @@ export default {
             };
 
             // Atualizar a observação do serviço na base de dados
-            
             fetch('http://localhost:3000/services/' + this.id, {
                 method: 'PATCH',
                 headers: {

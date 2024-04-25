@@ -1,5 +1,5 @@
 <template>
-    <button class="loginButton" @click="openLoginModal"><a>Login</a></button>
+    <button class="loginButton" @click="openLoginModal"><a>Iniciar Turno</a></button>
 </template>
 
 <script>
