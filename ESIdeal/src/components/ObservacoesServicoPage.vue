@@ -104,31 +104,10 @@ export default {
             })
             .catch((error) => {
                 console.log("Error " + error)
-            })
-
-            // Constroí o payload com o campo que vai ser atualizado
-            let new_servicos = this.worker.servicos_atribuidos.filter(id => id !== this.id);
-
-            const payload2 = {
-                servicos_atribuidos: new_servicos
-            };
-
-
-            // Remover o serviço das lista de serviços por concluir
-            fetch('http://localhost:3000/workers/' + this.worker.id, {
-                method: 'PATCH',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload2)
-            }).then(() => {
-                console.log("Serviços atribuídos ao funcionário atualizados na base de dados com sucesso.")
-            })
-            .catch((error) => {
-                console.log("Error " + error)
             }).finally(() => {
                 this.$router.push({ name: 'servicoConcluido'})
             })
+
         },
         changeToServicePage() {
             this.$router.push({ name: 'servico'})

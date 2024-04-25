@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal"</a></p>
+        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
@@ -11,14 +11,16 @@
     
     <UserProfileOverlay :show="showUserProfileOverlay" @close="toggleOverlay"></UserProfileOverlay>
 
-    <div class="servicosAtribuidos">
         <div class="ordenar">
             <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
             <div class="options" v-show="showOptions">
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
+                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'estado' } })" class="option-button">Estado</button>
             </div>
+            <button @click="filterServicosConcluidos" class="filter-button">{{ showConcluidos ? 'Mostrar serviços realizados' : 'Esconder os serviços realizados'}}</button> 
         </div>
+    <div class="servicosAtribuidos">
 
         <div class="servico" v-for="servico in servicosAtribuidos[page - 1]">
             <a @click="handleServicoClick(servico)">
@@ -47,6 +49,7 @@
                         </div>
                     </div>
                     <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
+                    <p class="estado" :class="{ 'green': servico.estado === 'realizado','light-green': servico.estado === 'porRealizar', 'red': servico.estado === 'parado' }">{{ formatEstado(servico.estado) }}</p>
                 </div>
             </a>
         </div>
@@ -81,7 +84,10 @@ export default {
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false,
             showOptions: false,
-            page: 1
+            page: 1,
+            currentFilter: true, //true = normal filtering, false = reverse filtering
+            showConcluidos: false,
+            lastCompletedServicesState: false         
         }
     },
     async created() {
@@ -113,7 +119,6 @@ export default {
         }
 
         for (let i = 0; i < servicosAtribuidosTemp.length; i++) {
-            if (servicosAtribuidosTemp[i].estado == 'realizado') continue;
             if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
                 this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
             else
@@ -122,8 +127,9 @@ export default {
     },
     watch: {
         '$route.query.orderBy'(newVal, oldVal) {
+            this.currentFilter = !this.currentFilter;
             if (newVal) {
-                this.orderServicos(newVal);
+                this.orderServicos(newVal, this.currentFilter);
             }
         },
         '$route.query.p'(newVal, oldVal) {
@@ -133,34 +139,73 @@ export default {
         }
     },
     methods: {
+        filterServicosConcluidos() {
+            this.showConcluidos = !this.showConcluidos;
+            if (this.showConcluidos) {
+                this.lastCompletedServicesState = this.servicosAtribuidos;
+                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'realizado'));
+            } else {
+                this.servicosAtribuidos = this.lastCompletedServicesState;
+            }
+        },
+
         orderServicos(mode) {
-            this.page = 1;
-            this.showOptions = false;
-            const allServicos = this.servicosAtribuidos.flat();
+        this.currentFilter = !this.currentFilter;
 
-            allServicos.sort((a, b) => {
-                if (mode == 'dataInicio') {
-                    return new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos) - new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
-                }
-                else if (mode == 'dataPrevista') {
-                    const duracao = a.definition.duracao;
-                    const dataInicio = new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos);
-                    const dataPrevista = new Date(dataInicio.getTime() + duracao * 60000);
+        this.page = 1;
+        this.showOptions = false;
+        const allServicos = this.servicosAtribuidos.flat();
 
-                    const duracao2 = b.definition.duracao;
-                    const dataInicio2 = new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
-                    const dataPrevista2 = new Date(dataInicio2.getTime() + duracao2 * 60000);
+        allServicos.sort((a, b) => {
+            let result = 0;
+            if (mode === 'dataInicio') {
+                result = new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos) - new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
+            } else if (mode === 'dataPrevista') {
+                const duracao = a.definition.duracao;
+                const dataInicio = new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos);
+                const dataPrevista = new Date(dataInicio.getTime() + duracao * 60000);
 
-                    return dataPrevista - dataPrevista2;
-                }
-            });
+                const duracao2 = b.definition.duracao;
+                const dataInicio2 = new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
+                const dataPrevista2 = new Date(dataInicio2.getTime() + duracao2 * 60000);
 
-            this.servicosAtribuidos = [[]];
-            for (let i = 0; i < allServicos.length; i++) {
-                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 3)
-                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(allServicos[i]);
-                else
-                    this.servicosAtribuidos.push([allServicos[i]]);
+                result = dataPrevista - dataPrevista2;
+            } else if (mode === 'estado') {
+                const estadoOrder = {
+                    'porRealizar': 0,
+                    'parado': 1,
+                    'realizado': 2
+                };
+
+                const estadoA = a.estado;
+                const estadoB = b.estado;
+
+                result = estadoOrder[estadoA] - estadoOrder[estadoB];
+            }
+
+            // Reverse the result if currentFilter is false
+            return this.currentFilter ? result : -result;
+        });
+
+        // Update servicosAtribuidos with sorted data
+        this.servicosAtribuidos = [[]];
+        for (let i = 0; i < allServicos.length; i++) {
+            if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 3)
+                this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(allServicos[i]);
+            else
+                this.servicosAtribuidos.push([allServicos[i]]);
+            }
+        },
+
+        formatEstado(estado) {
+            if (estado === 'porRealizar') {
+                return 'Por Realizar';
+            } else if (estado === 'parado') {
+                return 'Parado';
+            } else if (estado === 'realizado') {
+                return 'Realizado';
+            } else {
+                return estado;
             }
         },
         toggleOptions() {
@@ -348,11 +393,37 @@ a{
     transition: background-color 0.3s;
 }
 
+.estado {
+    background-color: #FF7F48; /*default*/
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.light-green {
+    background-color: #007958;
+    color:white;
+}
+
+.green {
+    background-color: #112A12; 
+    color: white;
+}
+
+.red {
+    background-color: #C73030; 
+    
+}
+
 /*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 .ordenar {
     position: relative;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
     margin: 20px 0;
 }
+
 
 .expand-button {
     background-color: #FF7F48;
@@ -364,6 +435,17 @@ a{
     outline: none;
     transition: background-color 0.3s;
     font-size: 17px;
+    margin-left: 23%;
+}
+
+.filter-button {
+    background-color: #FF7F48;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 23%;
 }
 
 
@@ -373,11 +455,12 @@ a{
 
 
 .options {
+    margin-left: 23%;
     flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 10;
+    z-index: 999;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);

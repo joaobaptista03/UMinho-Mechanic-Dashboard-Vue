@@ -2,7 +2,7 @@
     <div class="overlay" v-if="show" @click.self="hideOverlay">
             <div class="overlay-content">
                 <p><a @click="this.$router.push({ name: 'profilePage' })">Ver Perfil</a></p>
-                <p><b><a @click="logout">Logout</a></b></p>
+                <p><b><a @click="logout">Terminar turno</a></b></p>
             </div>
     </div>
 </template>
