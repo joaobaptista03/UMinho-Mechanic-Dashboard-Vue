@@ -17,6 +17,7 @@
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'estado' } })" class="option-button">Estado</button>
+                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'tempo' } })" class="option-button">Tempo</button>
             </div>
             <button @click="filterServicosConcluidos" class="filter-button">{{ showConcluidos ? 'Mostrar serviços realizados' : 'Esconder os serviços realizados'}}</button> 
         </div>
@@ -48,7 +49,7 @@
                             <p>Espera</p>
                         </div>
                     </div>
-                    <p class="descricao"><b>Descrição: </b>{{servico.descricao}}</p>
+                    <p class="tempo-estimado"><b>Tempo estimado: </b>{{servico.definition.duracao}} minutos</p>
                     <p class="estado" :class="{ 'green': servico.estado === 'realizado','light-green': servico.estado === 'porRealizar', 'red': servico.estado === 'parado' }">{{ formatEstado(servico.estado) }}</p>
                 </div>
             </a>
@@ -91,12 +92,13 @@ export default {
         }
     },
     async created() {
-        const userStore = useUserStore();
-        this.username = userStore.getUser();
-        if (!this.username) this.$router.push({ name: 'home' });
+    const userStore = useUserStore();
+    this.username = userStore.getUser();
+    if (!this.username) this.$router.push({ name: 'home' });
 
-        console.log(this.username)
-        
+    console.log(this.username)
+    
+    try {
         const response = await fetch('http://localhost:3000/workers?nome_utilizador=' + this.username);
         if (!response.ok) throw new Error('Failed to fetch');
         const servicos = (await response.json())[0].servicos_atribuidos;
@@ -124,7 +126,14 @@ export default {
             else
                 this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
         }
+        
+        // Call filterServicosConcluidos after fetching and processing data
+        this.filterServicosConcluidos();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
     },
+
     watch: {
         '$route.query.orderBy'(newVal, oldVal) {
             this.currentFilter = !this.currentFilter;
@@ -181,9 +190,9 @@ export default {
                 const estadoB = b.estado;
 
                 result = estadoOrder[estadoA] - estadoOrder[estadoB];
+            } else if (mode === 'tempo') {
+                result = a.definition.duracao - b.definition.duracao;
             }
-
-            // Reverse the result if currentFilter is false
             return this.currentFilter ? result : -result;
         });
 
@@ -273,7 +282,7 @@ a{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
     width: 50%;
 }
 
@@ -298,6 +307,7 @@ a{
 
 
 .datahora{
+    margin-top: 3%;
     display: flex;
     width: 30%;
     justify-content: space-between;
