@@ -210,7 +210,7 @@ export default {
             if (estado === 'porRealizar') {
                 return 'Por Realizar';
             } else if (estado === 'parado') {
-                return 'Parado';
+                return 'Suspenso';
             } else if (estado === 'realizado') {
                 return 'Realizado';
             } else {

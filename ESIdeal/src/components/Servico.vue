@@ -37,8 +37,9 @@
             <div class="container-buttons">
                 <button class="button-voltar" @click="this.$router.push({ name: 'servicosAtribuidos' })">Voltar</button>
                 <div class="button-divider">
+                    <button v-if="shouldShowComecarButton" class="button-adiar" @click="comecarServico">Começar Serviço</button>
                     <button class="button-adiar" @click="adiarServico">Adiar Serviço</button>
-                    <button class="button-concluir" @click="concluirServico">Concluir Serviço</button>
+                    <button v-if="shouldShowConcluirButton" class="button-concluir" @click="concluirServico">Concluir Serviço</button>
                 </div>
             </div>    
         </div>
@@ -64,6 +65,14 @@ export default {
             showUserProfileOverlay: false,
             vehicle: null,
             client: null
+        }
+    },
+    computed: {
+        shouldShowConcluirButton() {
+            return this.servico.estado === 'emExecucao';
+        },
+        shouldShowComecarButton() {
+            return this.servico.estado === 'porRealizar' || this.servico.estado === 'parado';
         }
     },
     async created() {
@@ -113,6 +122,26 @@ export default {
         },
         concluirServico() {
             this.$router.push({ name: 'observacoes' })
+        },
+        comecarServico() {
+            const payload1 = {
+                estado: "emExecucao",
+            };
+
+            fetch('http://localhost:3000/services/' + this.servico.id, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload1)
+            }).then(() => {
+                console.log("Observação atualizada na base de dados com sucesso.")
+            })
+            .catch((error) => {
+                console.log("Error " + error)
+            }).finally(() => {
+                this.$router.push({ name: 'comecarServico'})
+            })
         }
     }
 };

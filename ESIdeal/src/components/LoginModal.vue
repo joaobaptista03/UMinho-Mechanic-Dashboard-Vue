@@ -131,6 +131,7 @@ h2, #username, #password {
 }
 
 .error-message {
+    font-familty: 'inter', sans-serif;
     color: #C73030 !important; 
     width: 100% !important;
     margin: 5px;
