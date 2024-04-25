@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal"</a></p>
+        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
@@ -13,7 +13,7 @@
     
     <div class="servicoWrapper">
         <div class="title">
-                <h2>Serviço: <span id="servico-id">{{servico.id}}</span></h2>
+                <h2>Serviço: <span id="servico-id">{{servico.definition.descr}}</span></h2>
         </div>
         <div class="servico">
             
@@ -23,7 +23,6 @@
             </div>
             <div class="parte2">
                 <p><b>Contacto: </b>{{this.client.telefone}}</p>
-                <p><b>Serviço: </b>{{this.servico.definition.descr}}</p>
             </div>
             <div class="parte3">
                 <p><b>Estado: </b>{{servico.estado}}</p>

@@ -17,7 +17,6 @@
         </div>
         <div class="box">
             <span style="margin-bottom: 10px;">Serviço Concluído</span>
-
             <button class="button-voltar" @click="changeToServicePage">Voltar a Serviços</button>
         </div>
     </div>

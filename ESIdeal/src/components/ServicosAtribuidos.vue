@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal"</a></p>
+        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
@@ -17,6 +17,7 @@
             <div class="options" v-show="showOptions">
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
                 <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
+                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'estado' } })" class="option-button">Estado</button>
             </div>
         </div>
 
@@ -113,7 +114,6 @@ export default {
         }
 
         for (let i = 0; i < servicosAtribuidosTemp.length; i++) {
-            if (servicosAtribuidosTemp[i].estado == 'realizado') continue;
             if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
                 this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
             else
@@ -152,6 +152,11 @@ export default {
                     const dataPrevista2 = new Date(dataInicio2.getTime() + duracao2 * 60000);
 
                     return dataPrevista - dataPrevista2;
+                }
+                else if (mode == 'estado') {
+                    if (a.estado == 'realizado') return 1;
+                    if (b.estado == 'realizado') return -1;
+                    return 0;
                 }
             });
 
