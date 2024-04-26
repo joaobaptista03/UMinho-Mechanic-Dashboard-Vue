@@ -14,10 +14,10 @@
         <div class="ordenar">
             <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
             <div class="options" v-show="showOptions">
-                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataInicio' } })" class="option-button">Data de serviço</button>
-                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'dataPrevista' } })" class="option-button">Data final prevista</button>
-                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'estado' } })" class="option-button">Estado</button>
-                <button @click="this.$router.push({ name: 'servicosAtribuidos', query: { orderBy: 'tempo' } })" class="option-button">Tempo</button>
+                <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
+                <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
+                <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
+
             </div>
             <button @click="filterServicosConcluidos" class="filter-button">{{ showConcluidos ? 'Mostrar serviços realizados' : 'Esconder os serviços realizados'}}</button> 
         </div>
@@ -88,7 +88,9 @@ export default {
             page: 1,
             currentFilter: true, //true = normal filtering, false = reverse filtering
             showConcluidos: false,
-            lastCompletedServicesState: false         
+            CompletedServicesState: false,
+            currentOrderBy: null,
+            ascendingOrder: true         
         }
     },
     async created() {
@@ -133,34 +135,34 @@ export default {
         console.error('Error fetching data:', error);
     }
     },
-
-    watch: {
-        '$route.query.orderBy'(newVal, oldVal) {
-            this.currentFilter = !this.currentFilter;
-            if (newVal) {
-                this.orderServicos(newVal, this.currentFilter);
-            }
-        },
-        '$route.query.p'(newVal, oldVal) {
-            if (newVal) {
-                this.page = newVal;
-            }
-        }
-    },
     methods: {
+        updateQuery(orderBy) {
+            const query = { ...this.$route.query };
+
+            if (query.orderBy === orderBy) { // Se o user clica duas vezes no mesmo botão, inverte a ordem
+                query.orderDir = query.orderDir === 'asc' ? 'desc' : 'asc';
+                this.orderServicos(orderBy);
+            } else {
+                query.orderBy = orderBy;
+                query.orderDir = 'asc';
+                this.orderServicos(orderBy);
+            }
+
+            // Replace the current route's query with the updated one
+            this.$router.replace({ query });
+        },
         filterServicosConcluidos() {
             this.showConcluidos = !this.showConcluidos;
             if (this.showConcluidos) {
-                this.lastCompletedServicesState = this.servicosAtribuidos;
+                this.CompletedServicesState = this.servicosAtribuidos;
                 this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'realizado'));
             } else {
-                this.servicosAtribuidos = this.lastCompletedServicesState;
+                this.servicosAtribuidos = this.CompletedServicesState;
             }
         },
 
         orderServicos(mode) {
-        this.currentFilter = !this.currentFilter;
-
+        console.log("Ordering by: " + mode);
         this.page = 1;
         this.showOptions = false;
         const allServicos = this.servicosAtribuidos.flat();
@@ -179,23 +181,14 @@ export default {
                 const dataPrevista2 = new Date(dataInicio2.getTime() + duracao2 * 60000);
 
                 result = dataPrevista - dataPrevista2;
-            } else if (mode === 'estado') {
-                const estadoOrder = {
-                    'porRealizar': 0,
-                    'parado': 1,
-                    'realizado': 2
-                };
-
-                const estadoA = a.estado;
-                const estadoB = b.estado;
-
-                result = estadoOrder[estadoA] - estadoOrder[estadoB];
             } else if (mode === 'tempo') {
                 result = a.definition.duracao - b.definition.duracao;
             }
-            return this.currentFilter ? result : -result;
+            return this.currentFilter ? result : -result;  
         });
 
+        this.currentFilter = !this.currentFilter;
+        
         // Update servicosAtribuidos with sorted data
         this.servicosAtribuidos = [[]];
         for (let i = 0; i < allServicos.length; i++) {
@@ -218,7 +211,6 @@ export default {
             }
         },
         toggleOptions() {
-            console.log(this.showOptions)
             this.showOptions = !this.showOptions;
         },
         changePage(p) {

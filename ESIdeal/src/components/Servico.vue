@@ -80,7 +80,6 @@ export default {
         this.username = userStore.getUser();
         if (!this.username) this.$router.push({ name: 'home' });
 
-
         const servicoStore = useServicoStore();
         this.servico = servicoStore.getServico();
         
@@ -88,7 +87,7 @@ export default {
         if (!response.ok) throw new Error('Failed to fetch');
         const servicos = (await response.json())[0].servicos_atribuidos;
         const servicosAtribuidosTemp = [];
-
+        
         const response2 = await fetch('http://localhost:3000/vehicles?id=' + this.servico.vehicleId);
         if (!response2.ok) throw new Error('Failed to fetch');
         this.vehicle = (await response2.json())[0];
