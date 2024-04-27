@@ -16,7 +16,6 @@
                 <h2>Serviço: <span id="servico-id">{{servico.definition.descr}}</span></h2>
         </div>
         <div class="servico">
-            
             <div class="parte1">
                 <p><b>Nome do Cliente: </b>{{this.client.nome}}</p>
                 <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
@@ -28,8 +27,8 @@
                 <p><b>Estado: </b>{{servico.estado}}</p>
                 <p><b>Agendamento: </b>{{servico.agendamento}}</p>
                 <div v-if="servico.data.ano != 9999" >
-                        <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos}}</p></div>
-                        <p><b>Tempo estimado: </b>{{servico.definition.duracao}} minutos</p>
+                        <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos === 0 ? '00' : servico.data.minutos}}</p></div>
+                        <p><b>Tempo estimado: </b>{{servico.definition.duracao === 0 ? '00' : servico.definition.duracao}} minutos</p>
                         <p><b>Data estimada de fim: </b>{{ calculateEstimatedEndDate(servico.data, servico.definition.duracao) }}</p>
                 <p><b>Descrição: </b>{{servico.descricao}}</p>
                 <p><b>Observações: </b>{{servico.observacoes}}</p>
@@ -39,7 +38,9 @@
                 <div class="button-divider">
                     <button class="button-cancelar" @click="cancelarServico">Cancelar Servico</button>
                     <button class="button-adiar" @click="adiarServico">Adiar Serviço</button>
-                    <button v-if="servico.estado === 'porRealizar' || servico.estado === 'parado'" class="button-concluir" @click="comecarServico"> {{ servico.estado === 'porRealizar' ? 'Começar Serviço' : 'Retomar Serviço' }} </button>                    <button v-if="shouldShowConcluirButton" class="button-concluir" @click="concluirServico">Concluir Serviço</button>
+                    <button v-if="servico.estado === 'porRealizar' || servico.estado === 'parado'" class="button-concluir" @click="comecarServico"> {{ servico.estado === 'porRealizar' ? 'Começar Serviço' : 'Retomar Serviço' }} </button>    
+                    <button v-if="servico.estado === 'emExecucao'" class="button-suspender" @click="suspenderServico">Suspender Serviço</button>                
+                    <button v-if="servico.estado === 'emExecucao'" class="button-concluir" @click="concluirServico">Concluir Serviço</button>
                 </div>
             </div>    
         </div>
@@ -67,14 +68,6 @@ export default {
             client: null
         }
     },
-    computed: {
-        shouldShowConcluirButton() {
-            return this.servico.estado === 'emExecucao';
-        },
-        shouldShowComecarButton() {
-            return this.servico.estado === 'porRealizar' || this.servico.estado === 'parado';
-        }
-    },
     async created() {
         const userStore = useUserStore();
         this.username = userStore.getUser();
@@ -96,8 +89,6 @@ export default {
         if (!response3.ok) throw new Error('Failed to fetch');
         this.client = (await response3.json())[0];
 
-    },
-    watch: {
     },
     methods: {
         toggleOverlay() {
@@ -141,6 +132,27 @@ export default {
             }).finally(() => {
                 this.$router.push({ name: 'comecarServico'})
             })
+        },
+        suspenderServico(){
+            const payload1 = {
+                estado: "parado",
+            };
+
+            fetch('http://localhost:3000/services/' + this.servico.id, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload1)
+            }).then(() => {
+                console.log("Observação atualizada na base de dados com sucesso.")
+            })
+            .catch((error) => {
+                console.log("Error " + error)
+            }).finally(() => {
+                this.$router.push({ name: 'servicoSuspendido'})
+            })
+
         },
         cancelarServico() {
             fetch('http://localhost:3000/workers?nome_utilizador=' + this.username)
@@ -322,6 +334,24 @@ export default {
 }
 
 .button-cancelar:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.button-suspender {
+    width: 220px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 20px;
+    margin-right: 2%;
+    transition: all 0.5s ease;
+}
+
+.button-suspender:hover{
   transform: scale(0.98); /* Scale up when hovered */
   box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
   cursor: pointer;
