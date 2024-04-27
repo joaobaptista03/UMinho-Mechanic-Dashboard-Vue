@@ -215,7 +215,7 @@ export default {
         filterServicosEmExecucao() {
             console.log('Filtering services in progress');
             if (this.showEmExecucao) {
-                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'emExecucao');
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'emExecucao' || servico.estado !== 'EmExecucao'));
 
                 this.servicosAtribuidos = [[]]
                 for (let i = 0; i < services.length; i++) {
@@ -225,7 +225,7 @@ export default {
                         this.servicosAtribuidos.push([services[i]]);
                 }
             } else {
-                const services = this.allServicos.filter(servico => servico.estado === 'emExecucao');
+                const services = this.allServicos.filter(servico => (servico.estado === 'emExecucao' || servico.estado === 'EmExecucao'));
                 
                 for (let i = 0; i < services.length; i++) {
                     if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
@@ -239,7 +239,7 @@ export default {
         filterServicosConcluidos() {
             console.log('Filtering completed services');
             if (this.showConcluidos) {
-                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Realizado');
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'realizado' || servico.estado !== 'Realizado'));
 
                 this.servicosAtribuidos = [[]]
                 for (let i = 0; i < services.length; i++) {
@@ -249,7 +249,7 @@ export default {
                         this.servicosAtribuidos.push([services[i]]);
                 }
             } else {
-                const services = this.allServicos.filter(servico => servico.estado === 'Realizado');
+                const services = this.allServicos.filter(servico => (servico.estado === 'realizado' || servico.estado === 'Realizado'));
                 
                 for (let i = 0; i < services.length; i++) {
                     if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
@@ -263,7 +263,7 @@ export default {
         filterServicosPorRealizar() {
             console.log('Filtering services with estado set to porRealizar');
             if (this.showPorRealizar) {
-                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Por Realizar');
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'por Realizar' || servico.estado !== 'Por Realizar'));
 
                 this.servicosAtribuidos = [[]]
                 for (let i = 0; i < services.length; i++) {
@@ -273,7 +273,7 @@ export default {
                         this.servicosAtribuidos.push([services[i]]);
                 }
             } else {
-                const services = this.allServicos.filter(servico => servico.estado === 'Por Realizar');
+                const services = this.allServicos.filter(servico => (servico.estado === 'por Realizar' || servico.estado === 'Por Realizar'));
                 
                 for (let i = 0; i < services.length; i++) {
                     if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
@@ -287,7 +287,7 @@ export default {
         filterServicosParado() {
             console.log('Filtering services with estado set to parado');
             if (this.showParado) {
-                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Parado');
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'parado' || servico.estado !== 'Parado'));
 
                 this.servicosAtribuidos = [[]]
                 for (let i = 0; i < services.length; i++) {
@@ -297,7 +297,7 @@ export default {
                         this.servicosAtribuidos.push([services[i]]);
                 }
             } else {
-                const services = this.allServicos.filter(servico => servico.estado === 'Parado');
+                const services = this.allServicos.filter(servico => (servico.estado === 'parado' || servico.estado === 'Parado'));
                 
                 for (let i = 0; i < services.length; i++) {
                     if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
