@@ -662,6 +662,8 @@ export default {
     transition: background-color 0.3s;
     font-size: 17px;
     position: relative; /* Added position relative */
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .estado-dropdown:hover {
