@@ -13,11 +13,18 @@
 
         <div class="filters-container">
             <div class="ordenar">
-                <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
-                <div class="options" v-show="showOptions">
-                    <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
-                    <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
-                    <button @click="updateQuery('tempo')" class="option-button">Tempo estimado</button>
+                <div class="ordenar-container">
+                    <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
+                    <div class="arrow-box" @click="invertOrder()">
+                        <div class="arrow-down" v-if="filterDescendent"></div>
+                        <div class="arrow-up" v-if="!filterDescendent"></div>
+                    </div>
+                    <div class="options" v-show="showOptions">
+                        <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
+                        <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
+                        <button @click="updateQuery('tempo')" class="option-button">Tempo estimado</button>
+                </div>
+                
     
                 </div>
                 <div class="search-container">
@@ -26,16 +33,16 @@
                             Estado <span class="arrow">&#8963;</span>
                         <div class="dropdown-content" v-show="estadoDropdownVisible" @click.stop="">
                             <label>
-                                <input type="checkbox" v-model="filterStates.emExecucao" @change="applyEstadoFilter('emExecucao')"> Em Execução
+                                <input type="checkbox" v-model="filterStates.emExecucao" @click="applyEstadoFilter('emExecucao')"> Em Execução
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.realizado" @change="applyEstadoFilter('realizado')"> Realizado
+                                <input type="checkbox" v-model="filterStates.realizado" @click="applyEstadoFilter('realizado')"> Realizado
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.porRealizar" @change="applyEstadoFilter('porRealizar')"> Por Realizar
+                                <input type="checkbox" v-model="filterStates.porRealizar" @click="applyEstadoFilter('porRealizar')"> Por Realizar
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.parado" @change="applyEstadoFilter('parado')"> Parado
+                                <input type="checkbox" v-model="filterStates.parado" @click="applyEstadoFilter('parado')"> Parado
                             </label>
                         </div>
                     </button>
@@ -71,7 +78,7 @@
                         </div>
                     </div>
                     <p class="tempo-estimado"><b>Tempo estimado: </b>{{servico.definition.duracao === 0 ? '00' : servico.definition.duracao}} minutos </p>
-                    <p class="estado" :class="{ 'dark': servico.estado === 'realizado','green': servico.estado === 'porRealizar', 'red': servico.estado === 'parado', 'light-green': servico.estado === 'emExecucao' }">{{ formatEstado(servico.estado) }}</p>
+                    <p class="estado" :class="{ 'dark': servico.estado === 'realizado', 'dark': servico.estado === 'Realizado','green': servico.estado === 'porRealizar', 'green': servico.estado === 'PorRealizar', 'red': servico.estado === 'parado', 'red': servico.estado === 'Parado', 'light-green': servico.estado === 'emExecucao', 'light-green': servico.estado === 'EmExecucao' }">{{ formatEstado(servico.estado) }}</p>
                 </div>
             </a>
         </div>
@@ -104,23 +111,20 @@ export default {
             searchBarVisible: false,
             searchInput: '',
             username: null,
+            allServicos: [],
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false,
             showOptions: false,
             page: 1,
             
             /* Estado do filtro */
-            currentFilter: true, //true = filtrar por ordem normal, false = filtrar por ordem reversa
+            filterDescendent: true,
 
             /* Estado dos filtros de estado */
             showConcluidos: false,
-            CompletedServicesState: false,
-            showPorRealizar: false,
-            PorRealizarServicesState: false,
-            showParado: false,
-            ParadoServicesState: false,
-            showEmExecucao: false,
-            EmExecucaoServicesState: false,
+            showPorRealizar: true,
+            showParado: true,
+            showEmExecucao: true,
             filterStates: {
                 realizado: false,
                 porRealizar: true,
@@ -160,14 +164,14 @@ export default {
             }
 
             for (let i = 0; i < servicosAtribuidosTemp.length; i++) {
-                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
-                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
-                else
-                    this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
+                this.allServicos.push(servicosAtribuidosTemp[i]);
+                if (this.allServicos[i].estado !== 'Realizado') {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
+                    else
+                        this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
+                }
             }
-            
-            // Call filterServicosConcluidos after fetching and processing data
-            this.filterServicosConcluidos();
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -178,6 +182,7 @@ export default {
             this.estadoDropdownVisible = !this.estadoDropdownVisible;
         },
         applyEstadoFilter(estado) {
+            this.page = 1;
             if (estado === 'realizado') {
                this.filterServicosConcluidos();
             }
@@ -191,14 +196,14 @@ export default {
             } else {
                 console.error('Estado Inválido:', estado);
             }
+            this.filterDescendent = true;
+            this.orderServicos('dataInicio');
         },
         updateQuery(orderBy) {
             const query = { ...this.$route.query };
 
-            if (query.orderBy === orderBy) { // Se o user clica duas vezes no mesmo botão, inverte a ordem
-                query.orderDir = query.orderDir === 'asc' ? 'desc' : 'asc';
-                this.orderServicos(orderBy);
-            } else {
+            if (query.orderBy !== orderBy) { // Se o user clica duas vezes no mesmo botão, inverte a ordem
+                this.filterDescendent = true;
                 query.orderBy = orderBy;
                 query.orderDir = 'asc';
                 this.orderServicos(orderBy);
@@ -209,51 +214,107 @@ export default {
         },
         filterServicosEmExecucao() {
             console.log('Filtering services in progress');
-            this.showEmExecucao = !this.showEmExecucao;
             if (this.showEmExecucao) {
-                this.EmExecucaoServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'emExecucao'));
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'emExecucao' || servico.estado !== 'EmExecucao'));
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.EmExecucaoServicesState;
+                const services = this.allServicos.filter(servico => (servico.estado === 'emExecucao' || servico.estado === 'EmExecucao'));
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showEmExecucao = !this.showEmExecucao;
         },
         filterServicosConcluidos() {
             console.log('Filtering completed services');
-            this.showConcluidos = !this.showConcluidos;
             if (this.showConcluidos) {
-                this.CompletedServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'realizado'));
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'realizado' || servico.estado !== 'Realizado'));
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.CompletedServicesState;
+                const services = this.allServicos.filter(servico => (servico.estado === 'realizado' || servico.estado === 'Realizado'));
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showConcluidos = !this.showConcluidos;
         },
         filterServicosPorRealizar() {
             console.log('Filtering services with estado set to porRealizar');
-            this.showPorRealizar = !this.showPorRealizar;
             if (this.showPorRealizar) {
-                this.PorRealizarServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'porRealizar'));
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'por Realizar' || servico.estado !== 'Por Realizar'));
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.PorRealizarServicesState;
+                const services = this.allServicos.filter(servico => (servico.estado === 'por Realizar' || servico.estado === 'Por Realizar'));
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showPorRealizar = !this.showPorRealizar;
         },
         filterServicosParado() {
             console.log('Filtering services with estado set to parado');
-            this.showParado = !this.showParado;
             if (this.showParado) {
-                this.ParadoServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'parado'));
+                const services = this.servicosAtribuidos.flat().filter(servico => (servico.estado !== 'parado' || servico.estado !== 'Parado'));
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.ParadoServicesState;
+                const services = this.allServicos.filter(servico => (servico.estado === 'parado' || servico.estado === 'Parado'));
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showParado = !this.showParado;
         },
         orderServicos(mode) {
             console.log("Ordering by: " + mode);
             this.page = 1;
             this.showOptions = false;
-            const allServicos = this.servicosAtribuidos.flat();
+            const servicos = this.servicosAtribuidos.flat();
 
-            allServicos.sort((a, b) => {
+            servicos.sort((a, b) => {
                 let result = 0;
                 if (mode === 'dataInicio') {
                     result = new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos) - new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
@@ -270,18 +331,16 @@ export default {
                 } else if (mode === 'tempo') {
                     result = a.definition.duracao - b.definition.duracao;
                 }
-                return this.currentFilter ? result : -result;  
+                return this.filterDescendent ? result : -result;  
             });
 
-            this.currentFilter = !this.currentFilter;
-            
             // Update servicosAtribuidos with sorted data
             this.servicosAtribuidos = [[]];
-            for (let i = 0; i < allServicos.length; i++) {
-                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 3)
-                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(allServicos[i]);
+            for (let i = 0; i < servicos.length; i++) {
+                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicos[i]);
                 else
-                    this.servicosAtribuidos.push([allServicos[i]]);
+                    this.servicosAtribuidos.push([servicos[i]]);
                 }
         },
         formatEstado(estado) {
@@ -301,9 +360,7 @@ export default {
             this.showOptions = !this.showOptions;
         },
         changePage(p) {
-            this.page = parseInt(this.page);
-            this.page += parseInt(p);
-            this.$router.push({ query: { p: this.page } });
+            this.page += p;
         },
         nomeMes(mes) {
             const data = new Date(2024, mes - 1); 
@@ -330,11 +387,23 @@ export default {
 
             const searchTerm = this.searchInput.toLowerCase();
 
-            if (servico.definition.descr.toLowerCase().startsWith(searchTerm)) {
+            if (servico.definition.descr.toLowerCase().includes(searchTerm)) {
                 return true;
             }
 
             return false;
+        },
+        invertOrder() {
+            const services = this.servicosAtribuidos.flat().reverse();
+
+            this.servicosAtribuidos = [[]];
+            for (let i = 0; i < services.length; i++) {
+                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                else
+                    this.servicosAtribuidos.push([services[i]]);
+            }
+            this.filterDescendent = !this.filterDescendent;
         }
     }
 };
@@ -702,6 +771,41 @@ export default {
 .estado-dropdown.active .dropdown-content {
     display: block;
 }
+
+.ordenar-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid #000;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #000;
+}
+
+.arrow-box{
+    background-color: #FF7F48;
+    width: 50px;
+    height: 40px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
 
 
 </style>

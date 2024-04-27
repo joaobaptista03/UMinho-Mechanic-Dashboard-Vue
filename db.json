@@ -226,7 +226,11 @@
       "solucoes": "Pesquisar na internet, assistir a vídeos e tutoriais, pedir ajuda aos colegas mais novos",
       "citacao": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil.",
       "servicos_atribuidos": [
-        "s34"
+        "s32",
+        "s33",
+        "s34",
+        "s12",
+        "s24"
       ]
     }
   ],
@@ -263,44 +267,27 @@
   ],
   "services": [
     {
-      "id": "s31",
-      "vehicleId": "08-25-AA",
-      "service-definitionId": "li",
-      "estado": "programado",
-      "agendamento": "programado",
-      "data": {
-        "dia": 26,
-        "mes": 3,
-        "ano": 2024,
-        "hora": 14,
-        "minutos": 14
-      },
-      "descricao": "Colocar XPTO 225R15",
-      "observacoes": "Troca de Pneus;\nLavar Escovas;\nMeter portas novas;\nAmortecedores;",
-      "adiamento": ""
-    },
-    {
       "id": "s32",
       "vehicleId": "AH-31-BB",
       "service-definitionId": "sp",
-      "estado": "programado",
+      "estado": "Por Realizar",
       "agendamento": "programado",
       "data": {
-        "dia": "31",
-        "mes": "01",
-        "ano": "2026",
+        "dia": "12",
+        "mes": "12",
+        "ano": "2028",
         "hora": 14,
         "minutos": 15
       },
       "descricao": "Atenção ao banco do condutor.",
       "observacoes": "Está tudo em ordem;\nDizer Olá.",
-      "adiamento": "Nada, apetece-me tirar férias."
+      "adiamento": "Estamos sem funcionários."
     },
     {
       "id": "s33",
       "vehicleId": "AH-32-44",
       "service-definitionId": "le",
-      "estado": "realizado",
+      "estado": "Por Realizar",
       "agendamento": "filaDeEspera",
       "data": {
         "dia": 99,
@@ -317,7 +304,7 @@
       "id": "s34",
       "vehicleId": "AH-21-25",
       "service-definitionId": "sfc",
-      "estado": "parado",
+      "estado": "Por Realizar",
       "agendamento": "filaDeEspera",
       "data": {
         "dia": 99,
@@ -334,7 +321,7 @@
       "id": "s12",
       "vehicleId": "08-25-AA",
       "service-definitionId": "sp",
-      "estado": "realizado",
+      "estado": "Realizado",
       "agendamento": "filaDeEspera",
       "data": {
         "dia": 99,
@@ -345,13 +332,13 @@
       },
       "descricao": "Colocar XPTO 225R15",
       "observacoes": "",
-      "adiamento": ""
+      "adiamento": "" 
     },
     {
       "id": "s24",
       "vehicleId": "08-25-AA",
       "service-definitionId": "li",
-      "estado": "realizado",
+      "estado": "Realizado",
       "agendamento": "programado",
       "data": {
         "dia": 26,
