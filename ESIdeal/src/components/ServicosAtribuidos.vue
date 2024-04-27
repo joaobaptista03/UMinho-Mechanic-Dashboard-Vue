@@ -17,7 +17,7 @@
                 <div class="options" v-show="showOptions">
                     <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
                     <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
-                    <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
+                    <button @click="updateQuery('tempo')" class="option-button">Tempo estimado</button>
     
                 </div>
                 <div class="search-container">

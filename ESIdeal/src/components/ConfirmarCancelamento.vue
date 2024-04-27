@@ -16,9 +16,14 @@
             <div class="titulo"><p style="font-size: 45px;">Serviço:</p><p style="color:#FF9D73; font-size: 45px; margin-left: 8px;">{{ this.id }}</p></div>
         </div>
         <div class="box">
-            <span style="margin-bottom: 10px;">Tem a Certeza que pretende cancelar o serviço?</span>
-            <button class="button-cancelar" @click="cancelService">Cancelar Serviço</button>
-            <button class="button-voltar" @click="changeToServicePage">Voltar a Serviços</button>
+            <div class="text">
+                <p id="title"><b>Tem a Certeza que pretende cancelar o serviço?</b></p>
+                <p id="subtitle">O serviço será eliminado da base de dados do sistema</p>
+            </div>
+            <div class="button-divider">
+                <button class="button-voltar" @click="changeToServicePage">Voltar a Serviços</button>
+                <button class="button-cancelar" @click="cancelService">Cancelar Serviço</button>
+            </div>
         </div>
     </div>
 
@@ -121,19 +126,64 @@ export default {
 
 <style scoped>
 
+.button-divider {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-cancelar{
+    width: 219px;
+    height: 88px;
+    border-radius: 50px;
+    border: none;
+    background-color: #C73030;
+    color: white;
+    font-size: 20px;
+    margin-right: 5%;
+    margin-top: 2%;
+    transition: all 0.05s ease;
+}
+
+.button-cancelar:hover{
+  transform: scale(0.98); 
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
 .box{
     display: flex;
     flex-direction: column;
     background-color: #EDEDED;
     border-radius: 50px;
     margin-bottom: 2%;
-    width: 40%;
+    width: 45%;
     padding-top: 47px;
     padding-bottom: 21px;
     font-size: 50px;
     justify-content: center;
     align-items: center;
     margin-top: 165px;
+}
+
+#title{
+    font-size: 30px;
+    margin-bottom: 1%;
+
+}
+
+#subtitle{
+    font-size: 20px;
+    margin-bottom: 50px;
 }
 
 .container{
@@ -159,7 +209,8 @@ export default {
     background-color: rgba(255, 127, 72, 0.8);
     color: white;
     font-size: 20px;
-    margin-top: 75px;
+    margin-left: 5%;
+    margin-top: 2%;
     transition: all 0.05s ease;
 }
 
