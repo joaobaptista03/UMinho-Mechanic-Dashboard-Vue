@@ -5,7 +5,7 @@
             <form @submit.prevent="submitLogin">
                 <input type="text" id="username" placeholder="Nome de utilizador" v-model="username">
                 <input type="password" id="password" placeholder="Palavra-Passe" v-model="password">
-                <p v-if="loginError" class="error-message">{{ loginError }}</p>
+                <span v-if="loginError" class="error-message">{{ loginError }}</span>
                 <div class="form-actions">
                     <button type="button" id="cancelar" @click="close">Cancelar</button>
                     <button type="submit">Confirmar</button>
@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .login-modal {
     position: fixed;
     display: flex;
@@ -131,7 +131,7 @@ h2, #username, #password {
 }
 
 .error-message {
-    font-familty: 'inter', sans-serif;
+    font-family: 'inter', sans-serif;
     color: #C73030 !important; 
     width: 100% !important;
     margin: 5px;

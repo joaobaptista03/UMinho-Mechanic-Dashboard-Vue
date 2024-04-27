@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .loginButton {
     background-color: #FF9D73;
     border-radius: 20px;

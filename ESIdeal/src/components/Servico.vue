@@ -37,9 +37,9 @@
             <div class="container-buttons">
                 <button class="button-voltar" @click="this.$router.push({ name: 'servicosAtribuidos' })">Voltar</button>
                 <div class="button-divider">
-                    <button v-if="shouldShowComecarButton" class="button-concluir" @click="comecarServico">Começar Serviço</button>
                     <button class="button-cancelar" @click="cancelarServico">Cancelar Servico</button>
                     <button class="button-adiar" @click="adiarServico">Adiar Serviço</button>
+                    <button class="button-concluir" @click="comecarServico"> {{ servico.estado === 'porRealizar' ? 'Começar Serviço' : 'Retomar Serviço' }}</button>
                     <button v-if="shouldShowConcluirButton" class="button-concluir" @click="concluirServico">Concluir Serviço</button>
                 </div>
             </div>    
@@ -282,7 +282,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     font-size: 20px;
-    margin-left: 65px;
+    margin-left: 3%;
     transition: all 0.5s ease;
 }
 
@@ -300,11 +300,29 @@ export default {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     font-size: 20px;
-    margin-right: 5%;
+    margin-right: 2%;
     transition: all 0.5s ease;
 }
 
 .button-adiar:hover{
+  transform: scale(0.98); /* Scale up when hovered */
+  box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.button-cancelar{ 
+    width: 180px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 20px;
+    margin-right: 2%;
+    transition: all 0.5s ease;
+}
+
+.button-cancelar:hover{
   transform: scale(0.98); /* Scale up when hovered */
   box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.55);
   cursor: pointer;
@@ -318,7 +336,6 @@ export default {
     background-color: rgba(255, 127, 72, 0.8);
     color: white;
     font-size: 20px;
-    margin-right: 65px;
     transition: all 0.05s ease;
     padding:0.5%;
 }
@@ -343,6 +360,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: 3%;
 }
 
 
