@@ -11,19 +11,24 @@
     
     <UserProfileOverlay :show="showUserProfileOverlay" @close="toggleOverlay"></UserProfileOverlay>
 
-        <div class="ordenar">
-            <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
-            <div class="options" v-show="showOptions">
-                <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
-                <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
-                <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
-
+        <div class="filters-container">
+            <div class="ordenar">
+                <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
+                <div class="options" v-show="showOptions">
+                    <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
+                    <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
+                    <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
+    
+                </div>
+                <div class="search-container">
+                    <input type="text" v-model="searchInput" class="search-bar" v-if="searchBarVisible">
+                    <button @click="filterServicosConcluidos" class="filter-button">{{ showConcluidos ? 'Mostrar serviços realizados' : 'Esconder os serviços realizados'}}</button>
+                    <div class="search-button" @click="showSearchBar"><img src="../assets/search.svg" style="width: 20px;"></div>
+                </div>
             </div>
-            <button @click="filterServicosConcluidos" class="filter-button">{{ showConcluidos ? 'Mostrar serviços realizados' : 'Esconder os serviços realizados'}}</button> 
         </div>
-    <div class="servicosAtribuidos">
-
-        <div class="servico" v-for="servico in servicosAtribuidos[page - 1]">
+    <div class="servicosAtribuidos" v-for="servico in servicosAtribuidos[page - 1]">
+        <div class="servico" v-if="shouldShowServico(servico)">
             <a @click="handleServicoClick(servico)">
                 <div class="parte1">
                     <p><b>ID: </b>{{servico.id}}</p>
@@ -54,19 +59,18 @@
                 </div>
             </a>
         </div>
-
-
-        <div class="pagination">
-            <button class="previous" v-if="this.page != 1" @click="changePage(-1)" :disabled="this.page == 1">
-                <img src="../assets/paganterior.png" alt="Previous" class="button-icon">
-            </button>
-            <span>Página {{this.page}}</span>
-            <button class="next" v-if="this.page != this.servicosAtribuidos.length" @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">
-                <img src="../assets/pagseguinte.png" alt="Previous" class="button-icon">
-            </button>
-        </div>
     </div>
 
+    <div class="pagination">
+        <button class="previous" v-if="this.page != 1" @click="changePage(-1)" :disabled="this.page == 1">
+            <img src="../assets/paganterior.png" alt="Previous" class="button-icon">
+        </button>
+        <span>Página {{this.page}}</span>
+        <button class="next" v-if="this.page != this.servicosAtribuidos.length" @click="changePage(1)" :disabled="this.page == this.servicosAtribuidos.length">
+            <img src="../assets/pagseguinte.png" alt="Previous" class="button-icon">
+        </button>
+    </div>
+    
 </template>
 
 <script>
@@ -81,6 +85,8 @@ export default {
     name: 'ServicosAtribuidos',
     data() {
         return {
+            searchBarVisible: false,
+            searchInput: '',
             username: null,
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false,
@@ -160,7 +166,6 @@ export default {
                 this.servicosAtribuidos = this.CompletedServicesState;
             }
         },
-
         orderServicos(mode) {
         console.log("Ordering by: " + mode);
         this.page = 1;
@@ -198,7 +203,6 @@ export default {
                 this.servicosAtribuidos.push([allServicos[i]]);
             }
         },
-
         formatEstado(estado) {
             if (estado === 'porRealizar') {
                 return 'Por Realizar';
@@ -231,6 +235,23 @@ export default {
             const servicoStore = useServicoStore();
             servicoStore.setServico(servico);
             this.$router.push({ name: 'servico'})
+        },
+        showSearchBar() {
+            this.searchInput = '';
+            this.searchBarVisible = !this.searchBarVisible;
+        },
+        shouldShowServico(servico) {
+            if (!this.searchBarVisible) {
+                return true;
+            }
+
+            const searchTerm = this.searchInput.toLowerCase();
+
+            if (servico.definition.descr.toLowerCase().startsWith(searchTerm)) {
+                return true;
+            }
+
+            return false;
         }
     }
 };
@@ -371,6 +392,7 @@ export default {
     justify-content: end;
     align-items: start;
     height: 60%;
+    margin-top: 3%;
 }
 
 .emespera{
@@ -440,6 +462,7 @@ export default {
 
 /*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 .ordenar {
+    width: 55%;
     position: relative;
     display:flex;
     align-items: center;
@@ -459,7 +482,6 @@ export default {
     outline: none;
     transition: background-color 0.3s;
     font-size: 17px;
-    margin-left: 23%;
 }
 
 .filter-button {
@@ -469,7 +491,8 @@ export default {
     border-radius: 20px;
     padding: 10px 20px;
     cursor: pointer;
-    margin-right: 23%;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 
@@ -508,6 +531,35 @@ export default {
 
 .option-button:hover {
     background-color: #f2f2f2;
+}
+
+.filters-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 75%;
+}
+
+.search-button {
+    background-color: #EDEDED;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search-bar {
+    border-radius: 5px;
+    width: 475px;
+    height: 25px;
+    background-color: #EDEDED;
+    font-size: 16px;
 }
 
 
