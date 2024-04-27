@@ -204,18 +204,21 @@ export default {
     margin-top: 40px;
 }
 
-.data-box{
+.data-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50px;
     width: 564px;
     height: 89px;
     border: 2px solid black;
-    text-align: center;
     line-height: 40px;
     font-size: 35px;
     font-weight: lighter;
     resize: none;
     margin-top: 56px;
 }
+
 
 .button-voltar{
     width: 180px;
