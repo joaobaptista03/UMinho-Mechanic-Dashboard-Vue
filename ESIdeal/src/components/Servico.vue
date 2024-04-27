@@ -22,13 +22,17 @@
             </div>
             <div class="veiculo">
 
-                <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
-                <p><b>Marca: </b>{{this.vehicle.marca}}</p>
-                <p><b>Modelo: </b>{{this.vehicle.modelo}}</p>
-                <p><b>Cilindrada: </b>{{this.vehicle.cilindrada}}</p>
-                <p><b>Combustível: </b>{{ this.vehicle['vehicle-typeId'] }}</p>
-                <p><b>Potência: </b>{{this.vehicle.potencia}}</p>
-                <p><b>Kilometragem: </b>{{this.vehicle.kms}}</p>
+                <div class="vhc_part1">
+                    <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
+                    <p><b>Marca: </b>{{this.vehicle.marca}}</p>
+                    <p><b>Modelo: </b>{{this.vehicle.modelo}}</p>
+                </div>
+                <div class="vhc_part2">
+                    <p><b>Cilindrada: </b>{{this.vehicle.cilindrada}}</p>
+                    <p><b>Combustível: </b>{{ this.vehicle['vehicle-typeId'] }}</p>
+                    <p><b>Potência: </b>{{this.vehicle.potencia}}</p>
+                    <p><b>Kilometragem: </b>{{this.vehicle.kms}}</p>
+                </div>
             </div>
     </div>
     <div class="servicoWrapper">
@@ -225,18 +229,36 @@ export default {
 }
 
 .veiculo {
+    display:flex;
     border-radius: 30px;
     padding: 2%;
     background-color: #F5F5F5;
     width:40%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     margin-right: 15%;
 }
 
+.vhc_part1 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-left: 8%;
+}
+
+.vhc_part2 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-right: 8%;
+}
+
 .veiculo p {
-    margin: 5px 0; 
+    margin: 10px 0; 
 }
 
 .servicoWrapper{
