@@ -26,6 +26,9 @@
                             Estado <span class="arrow">&#8963;</span>
                         <div class="dropdown-content" v-show="estadoDropdownVisible" @click.stop="">
                             <label>
+                                <input type="checkbox" v-model="filterStates.emExecucao" @change="applyEstadoFilter('emExecucao')"> Em Execução
+                            </label>
+                            <label>
                                 <input type="checkbox" v-model="filterStates.realizado" @change="applyEstadoFilter('realizado')"> Realizado
                             </label>
                             <label>
@@ -116,10 +119,13 @@ export default {
             PorRealizarServicesState: false,
             showParado: false,
             ParadoServicesState: false,
+            showEmExecucao: false,
+            EmExecucaoServicesState: false,
             filterStates: {
                 realizado: false,
                 porRealizar: true,
-                parado: true
+                parado: true,
+                emExecucao: true
             },
             estadoDropdownVisible: false         
         }
@@ -180,8 +186,11 @@ export default {
             }
             else if (estado === 'parado') {
                 this.filterServicosParado();
+            } else if (estado === 'emExecucao') {
+                this.filterServicosEmExecucao();
+            } else {
+                console.error('Estado Inválido:', estado);
             }
-            console.log('Filter applied for estado:', estado);
         },
         updateQuery(orderBy) {
             const query = { ...this.$route.query };
@@ -197,6 +206,16 @@ export default {
 
             // Replace the current route's query with the updated one
             this.$router.replace({ query });
+        },
+        filterServicosEmExecucao() {
+            console.log('Filtering services in progress');
+            this.showEmExecucao = !this.showEmExecucao;
+            if (this.showEmExecucao) {
+                this.EmExecucaoServicesState = this.servicosAtribuidos;
+                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'emExecucao'));
+            } else {
+                this.servicosAtribuidos = this.EmExecucaoServicesState;
+            }
         },
         filterServicosConcluidos() {
             console.log('Filtering completed services');
