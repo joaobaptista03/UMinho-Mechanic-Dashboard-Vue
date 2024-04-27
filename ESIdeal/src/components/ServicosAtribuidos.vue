@@ -13,11 +13,18 @@
 
         <div class="filters-container">
             <div class="ordenar">
-                <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
-                <div class="options" v-show="showOptions">
-                    <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
-                    <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
-                    <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
+                <div class="ordenar-container">
+                    <button @click="toggleOptions" class="expand-button"><b>Ordenar por:</b></button>
+                    <div class="arrow-box" @click="invertOrder()">
+                        <div class="arrow-down" v-if="filterDescendent"></div>
+                        <div class="arrow-up" v-if="!filterDescendent"></div>
+                    </div>
+                    <div class="options" v-show="showOptions">
+                        <button @click="updateQuery('dataInicio')" class="option-button">Data de serviço</button>
+                        <button @click="updateQuery('dataPrevista')" class="option-button">Data final prevista</button>
+                        <button @click="updateQuery('tempo')" class="option-button">Tempo</button>
+                </div>
+                
     
                 </div>
                 <div class="search-container">
@@ -111,7 +118,7 @@ export default {
             page: 1,
             
             /* Estado do filtro */
-            currentFilter: true, //true = filtrar por ordem normal, false = filtrar por ordem reversa
+            filterDescendent: true,
 
             /* Estado dos filtros de estado */
             showConcluidos: false,
@@ -189,15 +196,14 @@ export default {
             } else {
                 console.error('Estado Inválido:', estado);
             }
+            this.filterDescendent = true;
             this.orderServicos('dataInicio');
         },
         updateQuery(orderBy) {
             const query = { ...this.$route.query };
 
-            if (query.orderBy === orderBy) { // Se o user clica duas vezes no mesmo botão, inverte a ordem
-                query.orderDir = query.orderDir === 'asc' ? 'desc' : 'asc';
-                this.orderServicos(orderBy);
-            } else {
+            if (query.orderBy !== orderBy) { // Se o user clica duas vezes no mesmo botão, inverte a ordem
+                this.filterDescendent = true;
                 query.orderBy = orderBy;
                 query.orderDir = 'asc';
                 this.orderServicos(orderBy);
@@ -325,11 +331,9 @@ export default {
                 } else if (mode === 'tempo') {
                     result = a.definition.duracao - b.definition.duracao;
                 }
-                return this.currentFilter ? result : -result;  
+                return this.filterDescendent ? result : -result;  
             });
 
-            this.currentFilter = !this.currentFilter;
-            
             // Update servicosAtribuidos with sorted data
             this.servicosAtribuidos = [[]];
             for (let i = 0; i < servicos.length; i++) {
@@ -383,11 +387,23 @@ export default {
 
             const searchTerm = this.searchInput.toLowerCase();
 
-            if (servico.definition.descr.toLowerCase().startsWith(searchTerm)) {
+            if (servico.definition.descr.toLowerCase().includes(searchTerm)) {
                 return true;
             }
 
             return false;
+        },
+        invertOrder() {
+            const services = this.servicosAtribuidos.flat().reverse();
+
+            this.servicosAtribuidos = [[]];
+            for (let i = 0; i < services.length; i++) {
+                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                else
+                    this.servicosAtribuidos.push([services[i]]);
+            }
+            this.filterDescendent = !this.filterDescendent;
         }
     }
 };
@@ -755,6 +771,41 @@ export default {
 .estado-dropdown.active .dropdown-content {
     display: block;
 }
+
+.ordenar-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid #000;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #000;
+}
+
+.arrow-box{
+    background-color: #FF7F48;
+    width: 50px;
+    height: 40px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
 
 
 </style>
