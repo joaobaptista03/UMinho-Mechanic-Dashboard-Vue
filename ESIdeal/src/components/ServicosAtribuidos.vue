@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <p class="tempo-estimado"><b>Tempo estimado: </b>{{servico.definition.duracao === 0 ? '00' : servico.definition.duracao}} minutos </p>
-                    <p class="estado" :class="{ 'dark': servico.estado === 'realizado','green': servico.estado === 'porRealizar', 'red': servico.estado === 'parado', 'light-green': servico.estado === 'emExecucao' }">{{ formatEstado(servico.estado) }}</p>
+                    <p class="estado" :class="{ 'dark': servico.estado === 'realizado', 'dark': servico.estado === 'Realizado','green': servico.estado === 'porRealizar', 'green': servico.estado === 'PorRealizar', 'red': servico.estado === 'parado', 'red': servico.estado === 'Parado', 'light-green': servico.estado === 'emExecucao', 'light-green': servico.estado === 'EmExecucao' }">{{ formatEstado(servico.estado) }}</p>
                 </div>
             </a>
         </div>
