@@ -11,6 +11,7 @@ import ComecarServico from './components/ComecarServico.vue'
 import ServicoCancelado from './components/ServicoCancelado.vue'
 import loggedHome from './components/loggedHome.vue'
 import ServicoSuspendido from './components/ServicoSuspendido.vue'
+import ConfirmarCancelamento from './components/ConfirmarCancelamento.vue'
 
 
 const router = createRouter({
@@ -47,7 +48,8 @@ const router = createRouter({
         { path: '/servicosAtribuidos/servicoAdiado', name: "servicoAdiado", component: ServicoAdiado},
         { path: '/servicosAtribuidos/comecarServico', name: "comecarServico", component: ComecarServico},
         { path: '/servicosAtribuidos/servicoCancelado', name: "servicoCancelado", component: ServicoCancelado},
-        { path: '/servicosAtribuidos/servicoSuspendido', name: "servicoSuspendido", component: ServicoSuspendido}
+        { path: '/servicosAtribuidos/servicoSuspendido', name: "servicoSuspendido", component: ServicoSuspendido},
+        { path: '/servicosAtribuidos/confirmarCancelamento', name: "confirmarCancelamento", component: ConfirmarCancelamento }
     ]
 });
 
