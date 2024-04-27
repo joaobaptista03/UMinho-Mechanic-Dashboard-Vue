@@ -10,22 +10,33 @@
     </header>
     
     <UserProfileOverlay :show="showUserProfileOverlay" @close="toggleOverlay"></UserProfileOverlay>
-    
+    <div class="title">
+        <h2>Serviço: <span id="servico-id">{{servico.definition.descr}}</span></h2>
+    </div>
+    <div class="utilizador_veiculo_wrapper">
+            <div class="utilizador">
+                <img src="../assets/client.png" id="client-img" />
+                <p><b>{{this.client.nome}}</b></p>
+                <p>{{this.client.telefone}}</p>
+                <p>{{this.client.email}}</p>
+            </div>
+            <div class="veiculo">
+
+                <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
+                <p><b>Marca: </b>{{this.vehicle.marca}}</p>
+                <p><b>Modelo: </b>{{this.vehicle.modelo}}</p>
+                <p><b>Cilindrada: </b>{{this.vehicle.cilindrada}}</p>
+                <p><b>Combustível: </b>{{ this.vehicle['vehicle-typeId'] }}</p>
+                <p><b>Potência: </b>{{this.vehicle.potencia}}</p>
+                <p><b>Kilometragem: </b>{{this.vehicle.kms}}</p>
+            </div>
+    </div>
     <div class="servicoWrapper">
-        <div class="title">
-                <h2>Serviço: <span id="servico-id">{{servico.definition.descr}}</span></h2>
-        </div>
+        
         <div class="servico">
             <div class="parte1">
-                <p><b>Nome do Cliente: </b>{{this.client.nome}}</p>
-                <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
-            </div>
-            <div class="parte2">
-                <p><b>Contacto: </b>{{this.client.telefone}}</p>
-            </div>
-            <div class="parte3">
-                <p><b>Estado: </b>{{servico.estado}}</p>
-                <p><b>Agendamento: </b>{{servico.agendamento}}</p>
+                <p><b>Estado: </b>{{ formatEstado(servico.estado) }}</p>
+                <p><b>Agendamento: </b>{{ formatAgendamento(servico.agendamento)}}</p>
                 <div v-if="servico.data.ano != 9999" >
                         <p><b>Data de início: </b>{{servico.data.dia}}/{{servico.data.mes}}/{{servico.data.ano}}    {{servico.data.hora}}:{{servico.data.minutos === 0 ? '00' : servico.data.minutos}}</p></div>
                         <p><b>Tempo estimado: </b>{{servico.definition.duracao === 0 ? '00' : servico.definition.duracao}} minutos</p>
@@ -84,6 +95,7 @@ export default {
         const response2 = await fetch('http://localhost:3000/vehicles?id=' + this.servico.vehicleId);
         if (!response2.ok) throw new Error('Failed to fetch');
         this.vehicle = (await response2.json())[0];
+        console.log(this.vehicle);
 
         const response3 = await fetch('http://localhost:3000/clients?id=' + this.vehicle.clientId);
         if (!response3.ok) throw new Error('Failed to fetch');
@@ -91,6 +103,28 @@ export default {
 
     },
     methods: {
+        formatEstado(estado) {
+            if (estado === 'porRealizar') {
+                return 'Por Realizar';
+            } else if (estado === 'parado') {
+                return 'Suspenso';
+            } else if (estado === 'realizado') {
+                return 'Realizado';
+            } else if (estado === 'emExecucao') {
+                return 'Em Execução';
+            } else {
+                return estado;
+            }
+        },
+        formatAgendamento(agendamento) {
+            if (agendamento === 'filaDeEspera') {
+                return 'Fila de Espera';
+            } else if (agendamento === 'programado') {
+                return 'Programado';
+            } else {
+                return agendamento;
+            }
+        },
         toggleOverlay() {
             this.showUserProfileOverlay = !this.showUserProfileOverlay;
         },
@@ -152,54 +186,58 @@ export default {
             }).finally(() => {
                 this.$router.push({ name: 'servicoSuspendido'})
             })
-
         },
         cancelarServico() {
-            fetch('http://localhost:3000/workers?nome_utilizador=' + this.username)
-                .then(response => response.json())
-                .then(workerData => {
-                    // Assuming the worker data is an array and we are interested in the first worker
-                    const worker = workerData[0];
-                    if (!worker) throw new Error('Worker not found');
-
-                    // Remove the service with the matching ID from servicos_atribuidos
-                    const updatedServicosAtribuidos = worker.servicos_atribuidos.filter(servicoId => servicoId !== this.servico.id);
-
-                    // Update the worker's servicos_atribuidos in the database
-                    return fetch('http://localhost:3000/workers/' + worker.id, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            servicos_atribuidos: updatedServicosAtribuidos
-                        })
-                    });
-                })
-                .then(() => {
-                    console.log("Serviço removido da lista de serviços atribuídos do funcionário.");
-                    
-                    // Now that the service is removed from the worker's list, delete the service itself
-                    return fetch('http://localhost:3000/services/' + this.servico.id, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                })
-                .then(() => {
-                    console.log("Serviço excluído com sucesso.");
-                    this.$router.push({ name: 'servicoCancelado' });
-                })
-                .catch((error) => {
-                    console.error("Erro ao cancelar serviço:", error);
-                });
+            this.$router.push({ name: 'confirmarCancelamento' });
         }
     }
 };
 </script>
 
 <style scoped>
+
+.utilizador_veiculo_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2%;
+}
+
+.utilizador {
+    border-radius: 30px;
+    padding: 2%;
+    background-color: #F5F5F5;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 15%;
+}
+
+.utilizador img {
+    margin-bottom: 20px; 
+    width: 100px;
+    height: 100px;
+}
+
+.utilizador p {
+    margin: 5px 0; 
+}
+
+.veiculo {
+    border-radius: 30px;
+    padding: 2%;
+    background-color: #F5F5F5;
+    width:40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15%;
+}
+
+.veiculo p {
+    margin: 5px 0; 
+}
 
 .servicoWrapper{
     display: flex;
@@ -239,7 +277,7 @@ export default {
 .servico {
     display: flex;
     flex-direction: column;    
-    background-color: #EDEDED;
+    background-color: #F5F5F5;
     border-radius: 30px;
     margin-bottom: 2%;
     width: 70%;
@@ -249,13 +287,6 @@ export default {
     cursor:default;
 }
 
-.parte1{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
 
 .processo{
     background-color: #FF7F48;
@@ -268,16 +299,9 @@ export default {
     margin: 6px 50px;
 }
 
-.parte2{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 1%;
-    width: 100%;
-}
 
-.parte3 {
+.parte1 {
+    margin-top: 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
