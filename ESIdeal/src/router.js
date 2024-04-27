@@ -9,6 +9,7 @@ import ServicoAdiado from './components/ServicoAdiado.vue';
 import Servico from './components/Servico.vue'
 import ComecarServico from './components/ComecarServico.vue'
 import ServicoCancelado from './components/ServicoCancelado.vue'
+import loggedHome from './components/loggedHome.vue'
 
 
 const router = createRouter({
@@ -33,12 +34,18 @@ const router = createRouter({
             component: Servico,
             props: true
        },
+       {    
+            path: '/loggedHome',
+            name: 'loggedHome',
+            component: loggedHome,
+            props: true
+       },
         { path: '/servicosAtribuidos/observacoes', name: "observacoes", component: ObservacoesServicoPage},
         { path: '/servicosAtribuidos/servicoConcluido', name: "servicoConcluido", component: ServicoConcluido},
         { path: '/servicosAtribuidos/adiarServico', name: "adiarServico", component: AdiarServico},
         { path: '/servicosAtribuidos/servicoAdiado', name: "servicoAdiado", component: ServicoAdiado},
         { path: '/servicosAtribuidos/comecarServico', name: "comecarServico", component: ComecarServico},
-        { path: '/servicosAtribuidos/servicoCancelado', name: "servicoCancelado", component: ServicoCancelado},
+        { path: '/servicosAtribuidos/servicoCancelado', name: "servicoCancelado", component: ServicoCancelado}
     ]
 });
 

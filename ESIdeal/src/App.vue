@@ -14,7 +14,7 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #000000; /* Set background color on the header element */
+    background-color: black; /* Set background color on the header element */
 }
 
 header p {

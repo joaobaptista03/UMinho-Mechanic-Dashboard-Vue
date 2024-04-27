@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal</a></p>
+        <p class="title"><a @click="this.$router.push({name: 'loggedHome'})">E.S.Ideal</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">

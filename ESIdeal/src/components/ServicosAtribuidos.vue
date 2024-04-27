@@ -1,6 +1,6 @@
 <template>
     <header>
-        <p class="title"><a @click="this.$router.push({name: 'home'})">E.S.Ideal</a></p>
+        <p class="title"><a @click="this.$router.push({name: 'loggedHome'})">E.S.Ideal</a></p>
         <div class="navbar">
             <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
@@ -242,6 +242,27 @@ export default {
     cursor: pointer; 
 }
 
+
+.navbar a.navlink {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar a.navlink::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #FF7F48;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+    width:100%;
+    left:0;
+}
+
 .servicosAtribuidos {
     display: flex;
     flex-direction: column;
@@ -250,7 +271,7 @@ export default {
     font-family: 'open sans', sans-serif;
 }
 
-a{
+.servico a{
     display:flex;
     align-items: center;
     width: 100%;
@@ -415,6 +436,7 @@ a{
     background-color: #C73030; 
     
 }
+
 
 /*-------------------- Botão para ordenar, ainda tem de ser melhorado ----------------------------------------*/ 
 .ordenar {
