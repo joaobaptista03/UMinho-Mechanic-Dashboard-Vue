@@ -8,7 +8,7 @@ import AdiarServico from './components/AdiarServico.vue';
 import ServicoAdiado from './components/ServicoAdiado.vue';
 import Servico from './components/Servico.vue'
 import ComecarServico from './components/ComecarServico.vue'
-
+import ServicoCancelado from './components/ServicoCancelado.vue'
 
 
 const router = createRouter({
@@ -37,7 +37,8 @@ const router = createRouter({
         { path: '/servicosAtribuidos/servicoConcluido', name: "servicoConcluido", component: ServicoConcluido},
         { path: '/servicosAtribuidos/adiarServico', name: "adiarServico", component: AdiarServico},
         { path: '/servicosAtribuidos/servicoAdiado', name: "servicoAdiado", component: ServicoAdiado},
-        { path: '/servicosAtribuidos/comecarServico', name: "comecarServico", component: ComecarServico}
+        { path: '/servicosAtribuidos/comecarServico', name: "comecarServico", component: ComecarServico},
+        { path: '/servicosAtribuidos/servicoCancelado', name: "servicoCancelado", component: ServicoCancelado},
     ]
 });
 

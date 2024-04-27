@@ -37,7 +37,8 @@
             <div class="container-buttons">
                 <button class="button-voltar" @click="this.$router.push({ name: 'servicosAtribuidos' })">Voltar</button>
                 <div class="button-divider">
-                    <button v-if="shouldShowComecarButton" class="button-adiar" @click="comecarServico">Começar Serviço</button>
+                    <button v-if="shouldShowComecarButton" class="button-concluir" @click="comecarServico">Começar Serviço</button>
+                    <button class="button-cancelar" @click="cancelarServico">Cancelar Servico</button>
                     <button class="button-adiar" @click="adiarServico">Adiar Serviço</button>
                     <button v-if="shouldShowConcluirButton" class="button-concluir" @click="concluirServico">Concluir Serviço</button>
                 </div>
@@ -141,6 +142,47 @@ export default {
             }).finally(() => {
                 this.$router.push({ name: 'comecarServico'})
             })
+        },
+        cancelarServico() {
+            fetch('http://localhost:3000/workers?nome_utilizador=' + this.username)
+                .then(response => response.json())
+                .then(workerData => {
+                    // Assuming the worker data is an array and we are interested in the first worker
+                    const worker = workerData[0];
+                    if (!worker) throw new Error('Worker not found');
+
+                    // Remove the service with the matching ID from servicos_atribuidos
+                    const updatedServicosAtribuidos = worker.servicos_atribuidos.filter(servicoId => servicoId !== this.servico.id);
+
+                    // Update the worker's servicos_atribuidos in the database
+                    return fetch('http://localhost:3000/workers/' + worker.id, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            servicos_atribuidos: updatedServicosAtribuidos
+                        })
+                    });
+                })
+                .then(() => {
+                    console.log("Serviço removido da lista de serviços atribuídos do funcionário.");
+                    
+                    // Now that the service is removed from the worker's list, delete the service itself
+                    return fetch('http://localhost:3000/services/' + this.servico.id, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                })
+                .then(() => {
+                    console.log("Serviço excluído com sucesso.");
+                    this.$router.push({ name: 'servicoCancelado' });
+                })
+                .catch((error) => {
+                    console.error("Erro ao cancelar serviço:", error);
+                });
         }
     }
 };

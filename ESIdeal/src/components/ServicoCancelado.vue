@@ -2,7 +2,7 @@
     <header>
         <p>E.S.Ideal</p>
         <div class="navbar">
-            <p><a @click="this.$router.push({ name: 'servicosAtribuidos' })" class="navlink">Serviços Atribuídos</a></p>
+            <p><a @click="this.$router.push({ name: 'servicoCancelado' })" class="navlink">Serviços Atribuídos</a></p>
             <div class="profile-container">
                 <img src="../assets/profilepic.png" id="nav-img" @click="this.showUserProfileOverlay = !this.showUserProfileOverlay" />
             </div>
@@ -16,7 +16,7 @@
             <div class="titulo"><p style="font-size: 45px;">Serviço:</p><p style="color:#FF9D73; font-size: 45px; margin-left: 8px;">{{ this.id }}</p></div>
         </div>
         <div class="box">
-            <span style="margin-bottom: 10px;">Serviço Começado</span>
+            <span style="margin-bottom: 10px;">Serviço Cancelado</span>
             <button class="button-voltar" @click="changeToServicePage">Voltar a Serviços</button>
         </div>
     </div>
