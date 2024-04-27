@@ -20,18 +20,21 @@
                 <p>{{this.client.telefone}}</p>
                 <p>{{this.client.email}}</p>
             </div>
-            <div class="veiculo">
-
-                <div class="vhc_part1">
-                    <p><b>Matrícula: </b>{{servico.vehicleId}}</p>
-                    <p><b>Marca: </b>{{this.vehicle.marca}}</p>
-                    <p><b>Modelo: </b>{{this.vehicle.modelo}}</p>
+            <div class="vhc_wrapper">
+                <div class="vhc_title">
+                    <h2>Veículo <b><span style="color: #FF9D73">{{servico.vehicleId}}</span></b></h2>
                 </div>
-                <div class="vhc_part2">
-                    <p><b>Cilindrada: </b>{{this.vehicle.cilindrada}}</p>
-                    <p><b>Combustível: </b>{{ this.vehicle['vehicle-typeId'] }}</p>
-                    <p><b>Potência: </b>{{this.vehicle.potencia}}</p>
-                    <p><b>Kilometragem: </b>{{this.vehicle.kms}}</p>
+                <div class="veiculo">
+                    <div class="vhc_part1">
+                        <p><b>Marca: </b>{{this.vehicle.marca}}</p>
+                        <p><b>Modelo: </b>{{this.vehicle.modelo}}</p>
+                        <p><b>Combustível: </b>{{ this.vehicle['vehicle-typeId'] }}</p>
+                    </div>
+                    <div class="vhc_part2">
+                        <p><b>Cilindrada: </b>{{this.vehicle.cilindrada}}</p>
+                        <p><b>Potência: </b>{{this.vehicle.potencia}}</p>
+                        <p><b>Kilometragem: </b>{{this.vehicle.kms}}</p>
+                    </div>
                 </div>
             </div>
     </div>
@@ -228,17 +231,24 @@ export default {
     margin: 5px 0; 
 }
 
-.veiculo {
+.vhc_wrapper {
     display:flex;
     border-radius: 30px;
-    padding: 2%;
     background-color: #F5F5F5;
     width:40%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     margin-right: 15%;
+}
+
+.veiculo {
+    margin-top: 3.5%;
+    display:flex;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
 }
 
 .vhc_part1 {
@@ -246,7 +256,7 @@ export default {
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    margin-left: 8%;
+    margin-left: 14%;
 }
 
 .vhc_part2 {
@@ -254,7 +264,16 @@ export default {
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    margin-right: 8%;
+    margin-right: 14%;
+}
+
+.vhc_title {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 .veiculo p {
@@ -323,7 +342,7 @@ export default {
 
 
 .parte1 {
-    margin-top: 2%;
+    margin-top: 3%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -428,7 +447,7 @@ export default {
     align-items: center;
     width: 100%;
     padding-bottom: 2%;
-    padding-top: 3%;
+    padding-top: 4%;
 }
 
 .button-divider{
