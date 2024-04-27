@@ -26,16 +26,16 @@
                             Estado <span class="arrow">&#8963;</span>
                         <div class="dropdown-content" v-show="estadoDropdownVisible" @click.stop="">
                             <label>
-                                <input type="checkbox" v-model="filterStates.emExecucao" @change="applyEstadoFilter('emExecucao')"> Em Execução
+                                <input type="checkbox" v-model="filterStates.emExecucao" @click="applyEstadoFilter('emExecucao')"> Em Execução
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.realizado" @change="applyEstadoFilter('realizado')"> Realizado
+                                <input type="checkbox" v-model="filterStates.realizado" @click="applyEstadoFilter('realizado')"> Realizado
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.porRealizar" @change="applyEstadoFilter('porRealizar')"> Por Realizar
+                                <input type="checkbox" v-model="filterStates.porRealizar" @click="applyEstadoFilter('porRealizar')"> Por Realizar
                             </label>
                             <label>
-                                <input type="checkbox" v-model="filterStates.parado" @change="applyEstadoFilter('parado')"> Parado
+                                <input type="checkbox" v-model="filterStates.parado" @click="applyEstadoFilter('parado')"> Parado
                             </label>
                         </div>
                     </button>
@@ -104,6 +104,7 @@ export default {
             searchBarVisible: false,
             searchInput: '',
             username: null,
+            allServicos: [],
             servicosAtribuidos: [[]],
             showUserProfileOverlay: false,
             showOptions: false,
@@ -114,13 +115,9 @@ export default {
 
             /* Estado dos filtros de estado */
             showConcluidos: false,
-            CompletedServicesState: false,
-            showPorRealizar: false,
-            PorRealizarServicesState: false,
-            showParado: false,
-            ParadoServicesState: false,
-            showEmExecucao: false,
-            EmExecucaoServicesState: false,
+            showPorRealizar: true,
+            showParado: true,
+            showEmExecucao: true,
             filterStates: {
                 realizado: false,
                 porRealizar: true,
@@ -160,14 +157,14 @@ export default {
             }
 
             for (let i = 0; i < servicosAtribuidosTemp.length; i++) {
-                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
-                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
-                else
-                    this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
+                this.allServicos.push(servicosAtribuidosTemp[i]);
+                if (this.allServicos[i].estado !== 'Realizado') {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicosAtribuidosTemp[i]);
+                    else
+                        this.servicosAtribuidos.push([servicosAtribuidosTemp[i]]);
+                }
             }
-            
-            // Call filterServicosConcluidos after fetching and processing data
-            this.filterServicosConcluidos();
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -178,6 +175,7 @@ export default {
             this.estadoDropdownVisible = !this.estadoDropdownVisible;
         },
         applyEstadoFilter(estado) {
+            this.page = 1;
             if (estado === 'realizado') {
                this.filterServicosConcluidos();
             }
@@ -191,6 +189,7 @@ export default {
             } else {
                 console.error('Estado Inválido:', estado);
             }
+            this.orderServicos('dataInicio');
         },
         updateQuery(orderBy) {
             const query = { ...this.$route.query };
@@ -209,51 +208,107 @@ export default {
         },
         filterServicosEmExecucao() {
             console.log('Filtering services in progress');
-            this.showEmExecucao = !this.showEmExecucao;
             if (this.showEmExecucao) {
-                this.EmExecucaoServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'emExecucao'));
+                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'emExecucao');
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.EmExecucaoServicesState;
+                const services = this.allServicos.filter(servico => servico.estado === 'emExecucao');
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showEmExecucao = !this.showEmExecucao;
         },
         filterServicosConcluidos() {
             console.log('Filtering completed services');
-            this.showConcluidos = !this.showConcluidos;
             if (this.showConcluidos) {
-                this.CompletedServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'realizado'));
+                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Realizado');
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.CompletedServicesState;
+                const services = this.allServicos.filter(servico => servico.estado === 'Realizado');
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showConcluidos = !this.showConcluidos;
         },
         filterServicosPorRealizar() {
             console.log('Filtering services with estado set to porRealizar');
-            this.showPorRealizar = !this.showPorRealizar;
             if (this.showPorRealizar) {
-                this.PorRealizarServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'porRealizar'));
+                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Por Realizar');
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.PorRealizarServicesState;
+                const services = this.allServicos.filter(servico => servico.estado === 'Por Realizar');
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showPorRealizar = !this.showPorRealizar;
         },
         filterServicosParado() {
             console.log('Filtering services with estado set to parado');
-            this.showParado = !this.showParado;
             if (this.showParado) {
-                this.ParadoServicesState = this.servicosAtribuidos;
-                this.servicosAtribuidos = this.servicosAtribuidos.map(servicos => servicos.filter(servico => servico.estado !== 'parado'));
+                const services = this.servicosAtribuidos.flat().filter(servico => servico.estado !== 'Parado');
+
+                this.servicosAtribuidos = [[]]
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             } else {
-                this.servicosAtribuidos = this.ParadoServicesState;
+                const services = this.allServicos.filter(servico => servico.estado === 'Parado');
+                
+                for (let i = 0; i < services.length; i++) {
+                    if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                        this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(services[i]);
+                    else
+                        this.servicosAtribuidos.push([services[i]]);
+                }
             }
+            this.showParado = !this.showParado;
         },
         orderServicos(mode) {
             console.log("Ordering by: " + mode);
             this.page = 1;
             this.showOptions = false;
-            const allServicos = this.servicosAtribuidos.flat();
+            const servicos = this.servicosAtribuidos.flat();
 
-            allServicos.sort((a, b) => {
+            servicos.sort((a, b) => {
                 let result = 0;
                 if (mode === 'dataInicio') {
                     result = new Date(a.data.ano, a.data.mes - 1, a.data.dia, a.data.hora, a.data.minutos) - new Date(b.data.ano, b.data.mes - 1, b.data.dia, b.data.hora, b.data.minutos);
@@ -277,11 +332,11 @@ export default {
             
             // Update servicosAtribuidos with sorted data
             this.servicosAtribuidos = [[]];
-            for (let i = 0; i < allServicos.length; i++) {
-                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 3)
-                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(allServicos[i]);
+            for (let i = 0; i < servicos.length; i++) {
+                if (this.servicosAtribuidos[this.servicosAtribuidos.length - 1].length < 4)
+                    this.servicosAtribuidos[this.servicosAtribuidos.length - 1].push(servicos[i]);
                 else
-                    this.servicosAtribuidos.push([allServicos[i]]);
+                    this.servicosAtribuidos.push([servicos[i]]);
                 }
         },
         formatEstado(estado) {
@@ -301,9 +356,7 @@ export default {
             this.showOptions = !this.showOptions;
         },
         changePage(p) {
-            this.page = parseInt(this.page);
-            this.page += parseInt(p);
-            this.$router.push({ query: { p: this.page } });
+            this.page += p;
         },
         nomeMes(mes) {
             const data = new Date(2024, mes - 1); 
