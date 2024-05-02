@@ -1,6 +1,5 @@
 # ESIdeal Mechanic Dashboard
 
-LIForCars is a comprehensive auction platform designed to facilitate online car auctions. It allows users to list cars for auction, place bids on vehicles, and manage auctions and bids with ease. Built with ASP.NET Core and Entity Framework, the platform offers a robust and scalable solution for online car auction businesses.
 ESIdeal is a dashboard that can be used by a car workoshop for the mechanics to schedule, cancel and manage their car services. It asks for their login, and then it shows their assigned services. They can order and filter them by various things, like name, date, etc.
 
 <img src="https://i.ibb.co/DkCMdck/image.png">
