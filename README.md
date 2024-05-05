@@ -22,12 +22,12 @@ ESIdeal is a dashboard that can be used by a car workoshop for the mechanics to 
     git clone https://github.com/joaobaptista03/UMinho-Mechanic-Dashboard-Vue
     ```
 
-3. **Run the JSON Server*
+3. **Run the JSON Server:**
    ```bash
    json-server --watch db.json
    ```
 
-4. **Install the dependencies**
+4. **Install the dependencies:**
    ```bash
    npm install
    ```
